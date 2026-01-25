@@ -2,6 +2,7 @@ import { Todo } from "./todo";
 import { TodoOperation } from "./todo";
 import { Project } from "./project";
 import { ProjectOperation } from "./project";
+import { Storage } from "./storage";
 
 const project = new Project("proj1");
 
@@ -14,4 +15,6 @@ ProjectOperation.addTask(project, todo);
 ProjectOperation.addTask(project, todo1);
 console.log(project);
 
-localStorage.setItem(JSON.stringify(project.id), JSON.stringify(project));
+Storage.saveProject(project);
+
+Storage.readProject(project);
