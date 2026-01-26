@@ -5,10 +5,18 @@ export class Storage {
         localStorage.setItem(project.id, JSON.stringify(project));
     }
 
-    static readProject(project) {
+    static readProjectItem(project) {
         const projectObj = JSON.parse(localStorage.getItem(project.id));
-        const tasks = projectObj["toDos"];
-        // Display here
+    }
+
+    static readProjectNames() {
+        let names = [];
+        Object.values(localStorage).forEach(item => {
+            let parsedItem = JSON.parse(item);
+            names.push(parsedItem.name);
+        });
+
+        return names;
     }
 
     static deleteProject(project) {
