@@ -6,6 +6,7 @@ export class NavBar {
     }
 
     renderNavBar(names) {
+        clearContent(this.main);
         const nav = document.createElement("nav");
         nav.textContent = this.title;
         this.main.appendChild(nav);
@@ -20,4 +21,8 @@ export class NavBar {
 
         nav.appendChild(ul);
     }
+}
+
+export function clearContent(parentElement) {
+    parentElement.innerHTML = "";
 }
