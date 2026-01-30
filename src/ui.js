@@ -23,6 +23,27 @@ export class NavBar {
     }
 }
 
+export class TaskDisplay {
+    constructor() {
+        this.title = "Tasks";
+        this.main = document.querySelector(".main");
+    }
+
+    renderTask(parsedTasks) {
+        parsedTasks.forEach(task => {
+            const taskElement = document.createElement("div");
+            taskElement.appendChild(this.#renderName(task.title));
+            this.main.appendChild(taskElement);
+        })
+    }
+
+    #renderName(task_name) {
+        const element = document.createElement("h1");
+        element.textContent = task_name;
+        return element;
+    }
+}
+
 export function clearContent(parentElement) {
     parentElement.innerHTML = "";
 }

@@ -4,6 +4,7 @@ import { Project } from "./project";
 import { ProjectOperation } from "./project";
 import { Storage } from "./storage";
 import { NavBar } from "./ui";
+import { TaskDisplay } from "./ui";
 
 const project = new Project("proj1");
 
@@ -15,9 +16,10 @@ ProjectOperation.addTask(project, todo);
 ProjectOperation.addTask(project, todo1);
 
 Storage.saveProject(project);
-Storage.readProjectItem(project);
+Storage.readAllTask(project);
 
 const names = Storage.readProjectNames();
 const nav = new NavBar("Menu");
+const task = new TaskDisplay();
 nav.renderNavBar(names);
-nav.renderNavBar(names);
+task.renderTask(Storage.readAllTask(project));

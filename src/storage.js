@@ -5,8 +5,10 @@ export class Storage {
         localStorage.setItem(project.id, JSON.stringify(project));
     }
 
-    static readProjectItem(project) {
-        const projectObj = JSON.parse(localStorage.getItem(project.id));
+    static readAllTask(project) {
+        const parsedTasks = JSON.parse(localStorage.getItem(project.id)).toDos;
+        console.log(parsedTasks);
+        return parsedTasks;
     }
 
     static readProjectNames() {
