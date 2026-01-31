@@ -1,3 +1,4 @@
+import { Project } from "./project";
 
 export class NavBar {
     constructor(title) {
@@ -5,7 +6,7 @@ export class NavBar {
         this.main = document.querySelector(".main");
     }
 
-    renderNavBar(names) {
+    renderNavBar(projects) {
         clearContent(this.main);
         const nav = document.createElement("nav");
         nav.textContent = this.title;
@@ -13,9 +14,10 @@ export class NavBar {
 
         const ul = document.createElement("ul");
 
-        names.forEach(name => {
+        projects.forEach(project => {
             const li = document.createElement("li");
-            li.textContent = name;
+            li.dataset.id = project.id;
+            li.textContent = project.name;
             ul.appendChild(li);
         });
 
@@ -29,17 +31,19 @@ export class TaskDisplay {
         this.main = document.querySelector(".main");
     }
 
-    renderTask(parsedTasks) {
-        parsedTasks.forEach(task => {
+    renderTask(tasks) {
+       tasks.forEach(task => {
+            console.log(task);
             const taskElement = document.createElement("div");
-            taskElement.appendChild(this.#renderName(task.title));
+            taskElement.appendChild(this.#renderName(task));
             this.main.appendChild(taskElement);
         })
     }
 
-    #renderName(task_name) {
+    #renderName(task) {
         const element = document.createElement("h1");
-        element.textContent = task_name;
+        element.dataset.taskId = task.id;
+        element.textContent = task.title;
         return element;
     }
 }

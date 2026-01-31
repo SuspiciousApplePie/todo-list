@@ -7,7 +7,6 @@ export class Storage {
 
     static readAllTask(project) {
         const parsedTasks = JSON.parse(localStorage.getItem(project.id)).toDos;
-        console.log(parsedTasks);
         return parsedTasks;
     }
 
@@ -15,7 +14,7 @@ export class Storage {
         let names = [];
         Object.values(localStorage).forEach(item => {
             let parsedItem = JSON.parse(item);
-            names.push(parsedItem.name);
+            names.push(parsedItem);
         });
 
         return names;
