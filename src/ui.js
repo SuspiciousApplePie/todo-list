@@ -32,9 +32,9 @@ export class TaskDisplay {
     }
 
     renderTask(tasks) {
-       tasks.forEach(task => {
-            console.log(task);
+       tasks.task.forEach(task => {
             const taskElement = document.createElement("div");
+            taskElement.dataset.projectId = tasks.id;
             taskElement.appendChild(this.#renderName(task));
             this.main.appendChild(taskElement);
         })

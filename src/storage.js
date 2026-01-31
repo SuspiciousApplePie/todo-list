@@ -7,7 +7,7 @@ export class Storage {
 
     static readAllTask(project) {
         const parsedTasks = JSON.parse(localStorage.getItem(project.id)).toDos;
-        return parsedTasks;
+        return { id: project.id, task: parsedTasks };
     }
 
     static readProjectNames() {
