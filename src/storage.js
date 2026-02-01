@@ -1,5 +1,3 @@
-import { TodoOperation } from "./todo";
-
 export class Storage {
     static saveProject(project) {
         localStorage.setItem(project.id, JSON.stringify(project));
@@ -8,6 +6,11 @@ export class Storage {
     static readAllTask(project) {
         const parsedTasks = JSON.parse(localStorage.getItem(project.id)).toDos;
         return { id: project.id, task: parsedTasks };
+    }
+
+    static getProject(id) {
+        const project = JSON.parse(localStorage.getItem(id));
+        return project;
     }
 
     static readProjectNames() {
