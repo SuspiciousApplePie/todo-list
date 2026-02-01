@@ -5,6 +5,8 @@ import { ProjectOperation } from "./project";
 import { Storage } from "./storage";
 import { NavBar } from "./ui";
 import { TaskDisplay } from "./ui";
+import { Controller } from "./controller";
+
 
 const project = new Project("proj1");
 
@@ -19,7 +21,22 @@ Storage.saveProject(project);
 Storage.readAllTask(project);
 
 const names = Storage.readProjectNames();
-const nav = new NavBar("Menu");
 const task = new TaskDisplay();
-nav.renderNavBar(names);
-task.renderTask(Storage.readAllTask(project));
+
+const project2 = new Project("proj2");
+
+const todo2 = new Todo("bandt", 1, 3, 4, 6, 6);
+const todo3 = new Todo("blon", 1, 3, 4, 6, 6);
+TodoOperation.editTitle(todo, "New");
+
+ProjectOperation.addTask(project2, todo2);
+ProjectOperation.addTask(project2, todo3);
+
+Storage.saveProject(project2);
+Storage.readAllTask(project2);
+
+const nav2 = new NavBar("Menu");
+const task2 = new TaskDisplay();
+nav2.renderNavBar(names);
+
+const controller = new Controller();

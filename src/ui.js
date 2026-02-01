@@ -7,7 +7,6 @@ export class NavBar {
     }
 
     renderNavBar(projects) {
-        clearContent(this.main);
         const nav = document.createElement("nav");
         nav.textContent = this.title;
         this.main.appendChild(nav);
@@ -32,7 +31,8 @@ export class TaskDisplay {
     }
 
     renderTask(tasks) {
-       tasks.task.forEach(task => {
+        
+        tasks.task.forEach(task => {
             const taskElement = document.createElement("div");
             taskElement.dataset.projectId = tasks.id;
             taskElement.appendChild(this.#renderName(task));
