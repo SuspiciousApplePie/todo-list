@@ -1,9 +1,11 @@
 import { Project } from "./project";
+import { Storage } from "./storage";
 
 export class NavBar {
     constructor(title) {
         this.title = title;
         this.main = document.querySelector(".main");
+        this.renderNavBar(Storage.readProjectNames());
     }
 
     renderNavBar(projects) {
@@ -44,6 +46,7 @@ export class TaskDisplay {
 
     #renderAddButton() {
         const button = document.createElement("button");
+        button.id = "add-task-btn";
         button.textContent = "Add Task";
         return button;
     }

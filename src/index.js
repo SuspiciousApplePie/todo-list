@@ -35,8 +35,6 @@ ProjectOperation.addTask(project2, todo3);
 Storage.saveProject(project2);
 Storage.readAllTask(project2);
 
-const nav2 = new NavBar("Menu");
 const task2 = new TaskDisplay();
-nav2.renderNavBar(names);
 
 const controller = new Controller();
