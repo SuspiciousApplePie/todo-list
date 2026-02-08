@@ -31,13 +31,21 @@ export class TaskDisplay {
     }
 
     renderTask(tasks) {
-        
+        const taskWrapper = document.createElement("div"); 
+        taskWrapper.dataset.projectId = tasks.id;
+        taskWrapper.appendChild(this.#renderAddButton());
+        this.main.appendChild(taskWrapper);
         tasks.task.forEach(task => {
             const taskElement = document.createElement("div");
-            taskElement.dataset.projectId = tasks.id;
             taskElement.appendChild(this.#renderName(task));
-            this.main.appendChild(taskElement);
+            taskWrapper.appendChild(taskElement);
         })
+    }
+
+    #renderAddButton() {
+        const button = document.createElement("button");
+        button.textContent = "Add Task";
+        return button;
     }
 
     #renderName(task) {
