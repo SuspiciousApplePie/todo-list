@@ -17,6 +17,8 @@ export class Controller {
                 clearContent(this.main);
                 this.nav.renderNavBar(Storage.readProjectNames());
                 this.task.renderTask(Storage.readAllTask(Storage.getProject(e.target.dataset.id)));
+            } else if (e.target.id === "add-task-btn") {
+                console.log("Add task");
             }
         })
     };
