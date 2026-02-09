@@ -59,6 +59,43 @@ export class TaskDisplay {
     }
 }
 
+export class AddTaskDialog {
+    constructor() {
+        this.title = "Add Task";
+        this.main = document.querySelector(".main");
+    }
+
+    renderAddTaskDialog() {
+        const dialog =  document.createElement("dialog");
+        dialog.appendChild(this.#renderHeader());
+        dialog.appendChild(this.#renderTaskNameField());
+        this.main.appendChild(dialog);
+        dialog.showModal();
+    }
+
+    #renderHeader() {
+        const h1 = document.createElement("h1");
+        h1.textContent = this.title;
+        return h1;
+    }
+
+    #renderTaskNameField() {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Task Title";
+        label.htmlFor = "title";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.id = "title";
+        input.type = "text";
+        input.minLength = 5;
+        div.appendChild(input);
+
+        return div;
+    }
+}
+
 export function clearContent(parentElement) {
     parentElement.innerHTML = "";
 }
