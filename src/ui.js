@@ -46,7 +46,7 @@ export class TaskDisplay {
 
     #renderAddButton() {
         const button = document.createElement("button");
-        button.id = "add-task-btn";
+        button.id = "show-add-task-modal";
         button.textContent = "Add Task";
         return button;
     }
@@ -66,11 +66,21 @@ export class AddTaskDialog {
     }
 
     renderAddTaskDialog() {
+        const dialog = this.createTaskDialog();
+        dialog.showModal();
+    }
+
+    createTaskDialog() {
         const dialog =  document.createElement("dialog");
+        dialog.id = "add-task-modal";
         dialog.appendChild(this.#renderHeader());
         dialog.appendChild(this.#renderTaskNameField());
+        dialog.appendChild(this.#renderDescriptionField());
+        dialog.appendChild(this.#renderDueDate());
+        dialog.appendChild(this.#renderPriority());
+        dialog.appendChild(this.#renderButtons());
         this.main.appendChild(dialog);
-        dialog.showModal();
+        return dialog; 
     }
 
     #renderHeader() {
@@ -94,8 +104,91 @@ export class AddTaskDialog {
 
         return div;
     }
+
+    #renderDescriptionField() {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Description";
+        label.htmlFor = "description";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.id = "description";
+        input.type = 30;
+        div.appendChild(input);
+
+        return div;
+    }
+
+    #renderDueDate() {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Due Date";
+        label.htmlFor = "due-date";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.id = "due-date";
+        input.type = "date";
+        div.appendChild(input);
+
+        return div;
+    }
+
+    #renderPriority() {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Priority";
+        label.htmlFor = "priority";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = "priority";
+        div.appendChild(input);
+
+        return div;
+    }
+
+    #renderButtons() {
+        const buttonInfo = [
+            {
+                text: "Back",
+                buttonId: "back-btn",
+            },
+            {
+                text: "Add Todo",
+                buttonId: "add-task-btn",
+
+            }
+        ];
+
+        const div = document.createElement("div");
+
+        buttonInfo.forEach(buttonObject => {
+            const button = document.createElement("button");
+            button.textContent = buttonObject.text;
+            button.id = buttonObject.buttonId;
+            div.appendChild(button);
+        })
+
+        return div;
+    }
+
+    readTaskDataInput() {
+        return {
+            title: document.querySelector("#title").value,
+            description: document.querySelector("#description").value,
+            dueDate: document.querySelector("#due-date").value,
+            priority: document.querySelector("#priority").checked,
+        }
+    }
 }
 
 export function clearContent(parentElement) {
     parentElement.innerHTML = "";
+}
+
+export function closeModal(modal) {
+    modal.close();
 }
