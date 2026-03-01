@@ -15,6 +15,8 @@ export class NavBar {
 
         const ul = document.createElement("ul");
 
+        this.#renderAddButton(ul);
+
         projects.forEach(project => {
             const li = document.createElement("li");
             li.dataset.id = project.id;
@@ -23,6 +25,13 @@ export class NavBar {
         });
 
         nav.appendChild(ul);
+    }
+
+    #renderAddButton(ul) {
+        const button = document.createElement("button");
+        button.textContent = "Add Project";
+        button.id = "show-project-modal";
+        ul.appendChild(button);
     }
 }
 
@@ -182,6 +191,76 @@ export class AddTaskDialog {
             dueDate: document.querySelector("#due-date").value,
             priority: document.querySelector("#priority").checked,
         }
+    }
+}
+
+export class AddProjectDialog {
+    constructor() {
+        this.title = "Add Project";
+        this.main = document.querySelector(".main");
+    }
+
+    renderAddProjectDialog() {
+        const dialog = this.#createProjectDialog();
+        dialog.showModal();   
+    }
+
+    #createProjectDialog() {
+        const dialog = document.createElement("dialog");
+        dialog.id = "create-project-modal";
+        const h1 = document.createElement("h1");
+        h1.textContent = "Add Project";
+        dialog.appendChild(h1);
+        dialog.appendChild(this.#createTitleInputDialog());
+        dialog.appendChild(this.#renderButtons());
+        this.main.appendChild(dialog);
+        return dialog;
+    }
+
+    #createTitleInputDialog() {
+        const div = document.createElement("div");
+
+        const label = document.createElement("label");
+        label.htmlFor = "project-title";
+        label.textContent = "Title:";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.maxLength = "30";
+        input.id = label.htmlFor;
+        div.appendChild(input);
+         
+        return div;
+    }
+
+    #renderButtons() {
+        const buttonInfo = [
+            {
+                text: "Back",
+                buttonId: "close-add-project-modal",
+            },
+            {
+                text: "Add Todo",
+                buttonId: "add-project-btn",
+
+            }
+        ];
+
+        const div = document.createElement("div");
+
+        buttonInfo.forEach(buttonObject => {
+            const button = document.createElement("button");
+            button.textContent = buttonObject.text;
+            button.id = buttonObject.buttonId;
+            div.appendChild(button);
+        })
+
+        return div;
+    }
+
+    readProjectInfo() {
+        return document.querySelector("#project-title").value;
     }
 }
 
