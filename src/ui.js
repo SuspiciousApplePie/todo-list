@@ -241,7 +241,7 @@ export class AddProjectDialog {
                 buttonId: "close-add-project-modal",
             },
             {
-                text: "Add Todo",
+                text: "Add Project",
                 buttonId: "add-project-btn",
 
             }
