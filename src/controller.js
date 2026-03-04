@@ -9,6 +9,7 @@ import { Project, ProjectOperation } from "./project";
 import { AddProjectDialog } from "./ui";
 import { State } from "./state";
 import { Todo } from "./todo";
+import { todoDialogInfo, projectDialogInfo } from "./constants";
 
 export class Controller {
     constructor() {
@@ -24,19 +25,19 @@ export class Controller {
         this.main.addEventListener("click", (e) => {
             if (e.target.dataset.id) {
                 State.selectProject(this.main, this.nav, this.task, e.target.dataset.id);
-            } else if (e.target.id === "show-add-task-modal") {
+            } else if (e.target.id === todoDialogInfo.OPEN_TODO_MODAL) {
                 State.showTaskModal(this.addTaskDialog)
-            } else if (e.target.id === "back-btn") {
+            } else if (e.target.id === todoDialogInfo.CLOSE_MODAL_BUTTON) {
                 State.closeModal(e.target.parentElement.parentElement);
-            } else if (e.target.id === "add-task-btn") {
+            } else if (e.target.id === todoDialogInfo.ADD_TODO_BUTTON) {
                 const projectId = e.target.parentElement.parentElement.previousElementSibling.dataset.projectId;
                 State.createNewTodo(projectId, this.addTaskDialog, this.nav, this.task, this.main);
-            } else if (e.target.id === "show-project-modal") {
+            } else if (e.target.id === projectDialogInfo.OPEN_PROJECT_MODAL) {
                 State.showProjectModal(this.addProjectDialog);
-            } else if (e.target.id === "close-add-project-modal") {
+            } else if (e.target.id === projectDialogInfo.CLOSE_MODAL_BUTTON) {
                 const dialog = e.target.parentElement.parentElement;
                 State.closeModal(dialog);
-            } else if (e.target.id === "add-project-btn") {
+            } else if (e.target.id === projectDialogInfo.ADD_PROJECT_BUTTON) {
                 State.createNewProject(this.addProjectDialog, this.nav, this.task, this.main);
             }
         })

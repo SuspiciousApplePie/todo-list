@@ -1,5 +1,5 @@
-import { Project } from "./project";
 import { Storage } from "./storage";
+import { todoDialogInfo, projectDialogInfo } from "./constants";
 
 export class NavBar {
     constructor(title) {
@@ -30,7 +30,7 @@ export class NavBar {
     #renderAddButton(ul) {
         const button = document.createElement("button");
         button.textContent = "Add Project";
-        button.id = "show-project-modal";
+        button.id = projectDialogInfo.OPEN_PROJECT_MODAL;
         ul.appendChild(button);
     }
 }
@@ -55,8 +55,8 @@ export class TaskDisplay {
 
     #renderAddButton() {
         const button = document.createElement("button");
-        button.id = "show-add-task-modal";
-        button.textContent = "Add Task";
+        button.id = todoDialogInfo.OPEN_TODO_MODAL;
+        button.textContent = todoDialogInfo.ADD_TODO_MODAL_TEXT;
         return button;
     }
 
@@ -70,7 +70,7 @@ export class TaskDisplay {
 
 export class AddTaskDialog {
     constructor() {
-        this.title = "Add Task";
+        this.title = todoDialogInfo.ADD_TODO_MODAL_TEXT;
         this.main = document.querySelector(".main");
     }
 
@@ -81,7 +81,7 @@ export class AddTaskDialog {
 
     createTaskDialog() {
         const dialog =  document.createElement("dialog");
-        dialog.id = "add-task-modal";
+        dialog.id = todoDialogInfo.DIALOG_ID;
         dialog.appendChild(this.#renderHeader());
         dialog.appendChild(this.#renderTaskNameField());
         dialog.appendChild(this.#renderDescriptionField());
@@ -101,7 +101,7 @@ export class AddTaskDialog {
     #renderTaskNameField() {
         const div = document.createElement("div");
         const label = document.createElement("label");
-        label.textContent = "Task Title";
+        label.textContent = "Todo";
         label.htmlFor = "title";
         div.appendChild(label);
 
@@ -163,11 +163,11 @@ export class AddTaskDialog {
         const buttonInfo = [
             {
                 text: "Back",
-                buttonId: "back-btn",
+                buttonId: todoDialogInfo.CLOSE_MODAL_BUTTON,
             },
             {
-                text: "Add Todo",
-                buttonId: "add-task-btn",
+                text: todoDialogInfo.ADD_TODO_MODAL_TEXT,
+                buttonId: todoDialogInfo.ADD_TODO_BUTTON,
 
             }
         ];
@@ -238,11 +238,11 @@ export class AddProjectDialog {
         const buttonInfo = [
             {
                 text: "Back",
-                buttonId: "close-add-project-modal",
+                buttonId: projectDialogInfo.CLOSE_MODAL_BUTTON,
             },
             {
                 text: "Add Project",
-                buttonId: "add-project-btn",
+                buttonId: projectDialogInfo.ADD_PROJECT_BUTTON,
 
             }
         ];
