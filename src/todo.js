@@ -1,11 +1,11 @@
-import { isBefore } from "date-fns";
+import { parseISO } from "date-fns";
 
 export class Todo {
     constructor(title, description, dueDate, priority, notes, checkList) {
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
-        this.dueDate = dueDate;
+        this.dueDate = parseISO(dueDate);
         this.priority = priority;
         this.notes = notes;
         this.checkList = checkList;
