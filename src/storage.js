@@ -26,4 +26,15 @@ export class Storage {
     static deleteProject(project) {
         localStorage.removeItem(project.id);
     }
+
+    static deleteTodo(todos, todoId) {
+        const updatedTodo = todos.filter(todo => {
+            if (todo.id === todoId) {
+                return;
+            }
+            return todo;
+        })
+
+        return updatedTodo;
+    }
 }

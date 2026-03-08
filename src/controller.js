@@ -1,14 +1,5 @@
-import { Storage } from "./storage";
-import { NavBar } from "./ui";
-import { TaskDisplay } from "./ui";
-import { clearContent } from "./ui";
-import { AddTaskDialog } from "./ui";
-import { closeModal } from "./ui";
-import { TodoOperation } from "./todo";
-import { Project, ProjectOperation } from "./project";
-import { AddProjectDialog } from "./ui";
+import { NavBar, TaskDisplay, AddTaskDialog, AddProjectDialog, DeleteModal } from "./ui";
 import { State } from "./state";
-import { Todo } from "./todo";
 import { todoDialogInfo, projectDialogInfo } from "./constants";
 
 export class Controller {
@@ -18,6 +9,7 @@ export class Controller {
         this.task = new TaskDisplay();
         this.addTaskDialog = new AddTaskDialog();
         this.addProjectDialog = new AddProjectDialog();
+        this.deleteTodoDialog = new DeleteModal("Todo");
         this.setUpListener();
     }
 
@@ -26,7 +18,7 @@ export class Controller {
             if (e.target.dataset.id) {
                 State.selectProject(this.main, this.nav, this.task, e.target.dataset.id);
             } else if (e.target.id === todoDialogInfo.OPEN_TODO_MODAL) {
-                State.showTaskModal(this.addTaskDialog)
+                State.showTodoModal(this.addTaskDialog)
             } else if (e.target.id === todoDialogInfo.CLOSE_MODAL_BUTTON) {
                 State.closeModal(e.target.parentElement.parentElement);
             } else if (e.target.id === todoDialogInfo.ADD_TODO_BUTTON) {
@@ -39,6 +31,17 @@ export class Controller {
                 State.closeModal(dialog);
             } else if (e.target.id === projectDialogInfo.ADD_PROJECT_BUTTON) {
                 State.createNewProject(this.addProjectDialog, this.nav, this.task, this.main);
+            } else if (e.target.className === "open-delete-todo-modal") {
+                const project = e.target.parentElement.parentElement.dataset.projectId;
+                const todo = e.target.previousElementSibling.dataset.taskId;
+                const title = e.target.previousElementSibling.textContent;
+                State.showDeleteModal(this.deleteTodoDialog, title, project, todo);
+            } else if (e.target.id === "close-delete-modal") {
+                State.closeModal(e.target.parentElement.parentElement);
+            } else if (e.target.id === "delete") {
+                const projectId = e.target.parentElement.parentElement.dataset.projectId;
+                const todoId = e.target.parentElement.parentElement.dataset.todoId;
+                State.deleteTodo(projectId, todoId, this.nav, this.task, this.main);
             }
         })
     };

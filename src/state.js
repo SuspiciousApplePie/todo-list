@@ -10,7 +10,7 @@ export class State {
         task.renderTask(Storage.readAllTask(Storage.getProject(projectId)));
     }
 
-    static showTaskModal(addTaskDialog) {
+    static showTodoModal(addTaskDialog) {
         addTaskDialog.renderAddTaskDialog();
     }
 
@@ -37,6 +37,20 @@ export class State {
     static createNewProject(addProjectDialog, nav, task, main) {
         const project_name = addProjectDialog.readProjectInfo();
         const project = new Project(project_name);
+        Storage.saveProject(project);
+        clearContent(main);
+        nav.renderNavBar(Storage.readProjectNames());
+        task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
+    }
+
+    static showDeleteModal(deleteTodoModal, title, project, todo) {
+        deleteTodoModal.renderDeleteModal(title, project, todo);
+    }
+
+    static deleteTodo(projectId, todoId, nav, task, main) {
+        const project = Storage.getProject(projectId);
+        const updatedTodo = Storage.deleteTodo(project.toDos, todoId)
+        project.toDos = updatedTodo;
         Storage.saveProject(project);
         clearContent(main);
         nav.renderNavBar(Storage.readProjectNames());

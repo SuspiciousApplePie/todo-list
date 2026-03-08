@@ -49,6 +49,7 @@ export class TaskDisplay {
         tasks.task.forEach(task => {
             const taskElement = document.createElement("div");
             taskElement.appendChild(this.#renderName(task));
+            taskElement.appendChild(this.#renderDeleteButton());
             taskWrapper.appendChild(taskElement);
         })
     }
@@ -64,6 +65,13 @@ export class TaskDisplay {
         const element = document.createElement("h1");
         element.dataset.taskId = task.id;
         element.textContent = task.title;
+        return element;
+    }
+
+    #renderDeleteButton() {
+        const element = document.createElement("button");
+        element.textContent = "Delete";
+        element.className = "open-delete-todo-modal";
         return element;
     }
 }
@@ -264,6 +272,60 @@ export class AddProjectDialog {
     }
 }
 
+export class DeleteModal {
+    constructor(type) {
+        this.type = type;
+        this.main = document.querySelector(".main");
+    }
+
+    renderDeleteModal(title, project, todo) {
+        const dialog = document.createElement("dialog");
+        dialog.dataset.projectId = project;
+        dialog.dataset.todoId = todo;
+        dialog.appendChild(this.#createHeader(title));
+        dialog.appendChild(this.#createDeleteModalQuestion());
+        dialog.appendChild(this.#createButtons());
+        this.main.appendChild(dialog);
+        dialog.showModal();
+    }
+
+    #createHeader(title) {
+        const header = document.createElement("h1");
+        header.textContent = `Delete ${title}`;
+        return header;
+    }
+
+    #createDeleteModalQuestion() {
+        const question = document.createElement("p");
+        question.textContent = `Are you sure you want to delete this ${this.type}?`;
+        return question;
+    }
+
+    #createButtons() {
+        const buttonInfo = [
+            {
+                text: "No",
+                buttonId: "close-delete-modal",
+            },
+            {
+                text: "Yes",
+                buttonId: "delete",
+
+            }
+        ];
+
+        const div = document.createElement("div");
+
+        buttonInfo.forEach(buttonObject => {
+            const button = document.createElement("button");
+            button.textContent = buttonObject.text;
+            button.id = buttonObject.buttonId;
+            div.appendChild(button);
+        })
+
+        return div;
+    }
+}
 export function clearContent(parentElement) {
     parentElement.innerHTML = "";
 }
