@@ -1,5 +1,5 @@
 import { Storage } from "./storage";
-import { todoDialogInfo, projectDialogInfo } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal } from "./constants";
 import { format } from "date-fns";
 
 export class NavBar {
@@ -73,14 +73,14 @@ export class TaskDisplay {
     #renderDeleteButton() {
         const element = document.createElement("button");
         element.textContent = "Delete";
-        element.className = "open-delete-todo-modal";
+        element.className = deleteTodoModal.OPEN_DELETE_MODAL;
         return element;
     }
 
     #renderEditButton() {
         const element = document.createElement("button");
         element.textContent = "Edit";
-        element.className = "open-edit-todo-modal";
+        element.className = editTodoModal.OPEN_EDIT_TODO_MODAL;
         return element;
     }
 }
@@ -224,7 +224,7 @@ export class AddProjectDialog {
 
     #createProjectDialog() {
         const dialog = document.createElement("dialog");
-        dialog.id = "create-project-modal";
+        dialog.id = projectDialogInfo.DIALOG_ID;
         const h1 = document.createElement("h1");
         h1.textContent = "Add Project";
         dialog.appendChild(h1);
@@ -314,11 +314,11 @@ export class DeleteModal {
         const buttonInfo = [
             {
                 text: "No",
-                buttonId: "close-delete-modal",
+                buttonId: deleteTodoModal.CLOSE_DELETE_MODAL,
             },
             {
                 text: "Yes",
-                buttonId: "delete",
+                buttonId: deleteTodoModal.DELETE_TODO,
 
             }
         ];
@@ -436,11 +436,11 @@ export class EditTodoModal {
         const buttonInfo = [
             {
                 text: "Close",
-                buttonId: "close-edit-todo-modal",
+                buttonId: editTodoModal.CLOSE_EDIT_TODO_MODAL,
             },
             {
                 text: "Save Changes",
-                buttonId: "edit-todo",
+                buttonId: editTodoModal.EDIT_TODO,
 
             }
         ];
