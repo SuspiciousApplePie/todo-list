@@ -1,5 +1,6 @@
 import { Storage } from "./storage";
 import { todoDialogInfo, projectDialogInfo } from "./constants";
+import { format } from "date-fns";
 
 export class NavBar {
     constructor(title) {
@@ -49,6 +50,7 @@ export class TaskDisplay {
         tasks.task.forEach(task => {
             const taskElement = document.createElement("div");
             taskElement.appendChild(this.#renderName(task));
+            taskElement.appendChild(this.#renderEditButton());
             taskElement.appendChild(this.#renderDeleteButton());
             taskWrapper.appendChild(taskElement);
         })
@@ -72,6 +74,13 @@ export class TaskDisplay {
         const element = document.createElement("button");
         element.textContent = "Delete";
         element.className = "open-delete-todo-modal";
+        return element;
+    }
+
+    #renderEditButton() {
+        const element = document.createElement("button");
+        element.textContent = "Edit";
+        element.className = "open-edit-todo-modal";
         return element;
     }
 }
@@ -326,6 +335,138 @@ export class DeleteModal {
         return div;
     }
 }
+
+export class EditTodoModal {
+    constructor() {
+        this.main = document.querySelector(".main");
+    }
+
+    renderEditTodoModal(projectId, todoId, todo) {
+        const dialog = this.#createEditTodoModal(todo);
+        dialog.dataset.projectId = projectId;
+        dialog.dataset.todoId = todoId;
+        dialog.showModal();
+    }
+
+    #createEditTodoModal(todo) {
+        const dialog = document.createElement("dialog");
+        dialog.appendChild(this.#createHeader());
+        dialog.appendChild(this.#createTitleInputDialog(todo.title));
+        dialog.appendChild(this.#createDescriptionField(todo.description));
+        dialog.appendChild(this.#createDueDate(todo.dueDate));
+        dialog.appendChild(this.#createPriority(todo.priority));
+        dialog.appendChild(this.#createButtons());
+        this.main.appendChild(dialog);
+        return dialog;
+    }
+
+    #createHeader() {
+        const header = document.createElement("h1");
+        header.textContent = "Edit Todo";
+        return header;
+    }
+
+    #createTitleInputDialog(title) {
+        const div = document.createElement("div");
+
+        const label = document.createElement("label");
+        label.htmlFor = "title";
+        label.textContent = "Title:";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.maxLength = "30";
+        input.id = label.htmlFor;
+        input.value = title;
+        div.appendChild(input);
+         
+        return div;
+    }
+
+    #createDescriptionField(description) {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Description";
+        label.htmlFor = "description";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.id = "description";
+        input.type = 30;
+        input.value = description;
+        div.appendChild(input);
+
+        return div;
+    }
+
+    #createDueDate(dueDate) {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Due Date";
+        label.htmlFor = "due-date";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.id = "due-date";
+        input.type = "date";
+        if (dueDate) input.value = format(dueDate, "yyyy-MM-dd");
+        div.appendChild(input);
+
+        return div;
+    }
+
+    #createPriority(priority) {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Priority";
+        label.htmlFor = "priority";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = "priority";
+        input.checked = priority;
+        div.appendChild(input);
+
+        return div;
+    }
+
+    #createButtons() {
+        const buttonInfo = [
+            {
+                text: "Close",
+                buttonId: "close-edit-todo-modal",
+            },
+            {
+                text: "Save Changes",
+                buttonId: "edit-todo",
+
+            }
+        ];
+
+        const div = document.createElement("div");
+
+        buttonInfo.forEach(buttonObject => {
+            const button = document.createElement("button");
+            button.textContent = buttonObject.text;
+            button.id = buttonObject.buttonId;
+            div.appendChild(button);
+        })
+
+        return div;
+    }
+
+    readUpdatedTodoData() {
+        return {
+            title: document.querySelector("#title").value,
+            description: document.querySelector("#description").value,
+            dueDate: document.querySelector("#due-date").value,
+            priority: document.querySelector("#priority").checked,
+        }
+    }
+}
+
 export function clearContent(parentElement) {
     parentElement.innerHTML = "";
 }

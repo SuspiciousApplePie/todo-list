@@ -1,7 +1,7 @@
 import { Storage } from "./storage";
-import { clearContent, closeModal } from "./ui";
+import { clearContent, closeModal, EditTodoModal } from "./ui";
 import { Project, ProjectOperation } from "./project";
-import { Todo } from "./todo";
+import { Todo, TodoOperation } from "./todo";
 
 export class State {
     static selectProject(main, nav, task, projectId) {
@@ -50,6 +50,25 @@ export class State {
     static deleteTodo(projectId, todoId, nav, task, main) {
         const project = Storage.getProject(projectId);
         const updatedTodo = Storage.deleteTodo(project.toDos, todoId)
+        project.toDos = updatedTodo;
+        Storage.saveProject(project);
+        clearContent(main);
+        nav.renderNavBar(Storage.readProjectNames());
+        task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
+    }
+
+    static showEditTodoModal(todoId, projectId, editTaskDialog) {
+        const project = Storage.getProject(projectId);
+        const selectedTodo = Storage.readTodo(project.toDos, todoId);
+        editTaskDialog.renderEditTodoModal(projectId, todoId, selectedTodo);
+    }
+
+    static editTodo(projectId, todoId, editTaskDialog, nav, task, main) {
+        const editedTodoData = editTaskDialog.readUpdatedTodoData();
+        const project = Storage.getProject(projectId);
+        const selectedTodo = Storage.readTodo(project.toDos, todoId);
+        const editedTodo = TodoOperation.editTodo(selectedTodo, editedTodoData);
+        const updatedTodo = Storage.updateProjectTodoList(project.toDos, editedTodo, todoId);
         project.toDos = updatedTodo;
         Storage.saveProject(project);
         clearContent(main);

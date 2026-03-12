@@ -37,4 +37,21 @@ export class Storage {
 
         return updatedTodo;
     }
+
+    static readTodo(todos, todoId) {
+        const selectedTodo = todos.find(todo => todo.id === todoId);
+        return selectedTodo;
+    }
+
+    static updateProjectTodoList(todos, updatedTodo, todoId) {
+        const updatedTodos = todos.map(todo => {
+            if (todo.id === todoId) {
+                return updatedTodo;
+            }
+
+            return todo;
+        });
+        
+        return updatedTodos;
+    }
 }

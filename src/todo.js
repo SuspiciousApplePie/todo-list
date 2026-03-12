@@ -13,11 +13,13 @@ export class Todo {
 }
 
 export class TodoOperation {
-    static addTask(todo) {
-        return new Todo(todo.title, todo.description, todo.dueDate, todo.priority);
-    }
-    static editTitle(todo, title) {
-        todo.title = title;
+    static editTodo(todo, updatedTodoData) {
+        todo.title = updatedTodoData.title;
+        todo.description = updatedTodoData.description;
+        if(updatedTodoData.dueDate) todo.dueDate = parseISO(updatedTodoData.dueDate);
+        todo.priority = todo.priority;
+
+        return todo;
     }
 
 }
