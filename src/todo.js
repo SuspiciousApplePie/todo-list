@@ -17,7 +17,7 @@ export class TodoOperation {
         todo.title = updatedTodoData.title;
         todo.description = updatedTodoData.description;
         if(updatedTodoData.dueDate) todo.dueDate = parseISO(updatedTodoData.dueDate);
-        todo.priority = todo.priority;
+        todo.priority = updatedTodoData.priority;
 
         return todo;
     }
