@@ -1,6 +1,7 @@
-import { NavBar, TaskDisplay, AddTaskDialog, AddProjectDialog, EditTodoModal, DeleteModal } from "./ui";
+import { NavBar, TaskDisplay, AddTaskDialog, AddProjectDialog, EditTodoModal, DeleteModal, createUndoToast } from "./ui";
 import { State } from "./state";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist } from "./constants";
+import { add } from "date-fns";
 
 export class Controller {
     constructor() {
@@ -11,6 +12,7 @@ export class Controller {
         this.addProjectDialog = new AddProjectDialog();
         this.editTodoDialog = new EditTodoModal();
         this.deleteTodoDialog = new DeleteModal("Todo");
+        this.pendingDeletion = { element: null, timeoutId: null };
         this.setUpListener();
     }
 
@@ -54,6 +56,31 @@ export class Controller {
                 const projectId = e.target.parentElement.parentElement.dataset.projectId;
                 const todoId = e.target.parentElement.parentElement.dataset.todoId;
                 State.editTodo(projectId, todoId, this.editTodoDialog, this.nav, this.task, this.main);
+            } else if (e.target.id === checklist.ADD_CHECKLIST) {
+                State.addChecklistItem(this.addTaskDialog);
+            } else if (e.target.className === checklist.DELETE_CHECKLIST) {
+                const undoToast = createUndoToast();
+
+                e.target.parentElement.parentElement.parentElement.parentElement.appendChild(undoToast);
+                this.pendingDeletion.element = e.target.parentElement;
+                this.pendingDeletion.element.classList.toggle("hide");
+
+                this.pendingDeletion.timeoutId = setTimeout(() => {
+                    State.deleteChecklistItem(e);
+                    undoToast.remove();
+                    this.pendingDeletion.timeoutId = null;
+                    this.pendingDeletion.element = null;
+                }, 5000);
+            } else if (e.target.id === "undo") {
+                this.pendingDeletion.element.classList.toggle("hide");
+                clearTimeout(this.pendingDeletion.timeoutId);
+                e.target.parentElement.remove();
+                this.pendingDeletion.timeoutId = null;
+                this.pendingDeletion.element = null;
+            } else if (e.target.className === checklist.EDIT_CHECKLIST) {
+                State.editChecklist(e);
+            } else if (e.target.classList.contains(checklist.SAVE_CHECKLIST)) {
+                State.saveChecklist(e);
             }
         })
     };

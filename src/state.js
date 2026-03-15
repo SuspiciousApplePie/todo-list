@@ -1,7 +1,7 @@
 import { Storage } from "./storage";
-import { clearContent, closeModal, EditTodoModal } from "./ui";
+import { clearContent, closeModal, EditTodoModal, createUndoToast } from "./ui";
 import { Project, ProjectOperation } from "./project";
-import { Todo, TodoOperation } from "./todo";
+import { Todo, TodoOperation, Checklist } from "./todo";
 
 export class State {
     static selectProject(main, nav, task, projectId) {
@@ -21,7 +21,8 @@ export class State {
 
     static createNewTodo(projectId, addTaskDialog, nav, task, main) {
         const todoData = addTaskDialog.readTaskDataInput();
-        const todo = new Todo(todoData.title, todoData.description, todoData.dueDate, todoData.priority);
+        const checklist = Checklist.convertToChecklistObj(todoData.checklist);
+        const todo = new Todo(todoData.title, todoData.description, todoData.dueDate, todoData.priority, checklist);
         const project = Storage.getProject(projectId);
         ProjectOperation.addTask(project, todo);
         Storage.saveProject(project);
@@ -74,5 +75,26 @@ export class State {
         clearContent(main);
         nav.renderNavBar(Storage.readProjectNames());
         task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
+    }
+
+    static addChecklistItem(addTodoDialog) {
+        addTodoDialog.addChecklistItem();
+    }
+
+    static deleteChecklistItem(e) {
+        e.target.parentElement.remove();
+    }
+
+    static editChecklist(e) {
+        const input = e.target.previousElementSibling;
+        input.readOnly = false;
+        e.target.disabled = true;
+        e.target.nextElementSibling.nextElementSibling.classList.toggle("hide");
+    }
+
+    static saveChecklist(e) {
+        e.target.previousElementSibling.previousElementSibling.previousElementSibling.readOnly = true;
+        e.target.previousElementSibling.previousElementSibling.disabled = false;
+        e.target.classList.toggle("hide");
     }
 }

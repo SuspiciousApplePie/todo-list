@@ -1,13 +1,12 @@
 import { parseISO } from "date-fns";
 
 export class Todo {
-    constructor(title, description, dueDate, priority, notes, checkList) {
+    constructor(title, description, dueDate, priority, checkList) {
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
         this.dueDate = parseISO(dueDate);
         this.priority = priority;
-        this.notes = notes;
         this.checkList = checkList;
     }
 }
@@ -21,6 +20,24 @@ export class TodoOperation {
 
         return todo;
     }
-
 }
 
+
+export class Checklist {
+    constructor(title) {
+        this.id = crypto.randomUUID();
+        this.title = title;
+        this.status = false;
+    }
+
+    static convertToChecklistObj(checklistData) {
+        const checklist = [];
+        checklistData.forEach(element => {
+            const title = element.firstChild.value;
+            const newChecklist = new Checklist(title);
+            checklist.push(newChecklist);
+        });
+
+        return checklist;
+    }
+}

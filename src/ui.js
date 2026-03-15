@@ -1,6 +1,8 @@
 import { Storage } from "./storage";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist } from "./constants";
+import { Checklist } from "./todo";
 import { format } from "date-fns";
+import "./styles.css";
 
 export class NavBar {
     constructor(title) {
@@ -104,6 +106,8 @@ export class AddTaskDialog {
         dialog.appendChild(this.#renderDescriptionField());
         dialog.appendChild(this.#renderDueDate());
         dialog.appendChild(this.#renderPriority());
+        dialog.appendChild(this.#renderChecklistField());
+        dialog.appendChild(this.#renderChecklistItems());
         dialog.appendChild(this.#renderButtons());
         this.main.appendChild(dialog);
         return dialog; 
@@ -176,6 +180,80 @@ export class AddTaskDialog {
         return div;
     }
 
+    #renderChecklistField() {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Add Checklist";
+        label.htmlFor = "checklist";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = label.htmlFor;
+        div.appendChild(input);
+
+        const button = document.createElement("button");
+        button.textContent = "Add Checklist";
+        button.id = checklist.ADD_CHECKLIST;
+        div.appendChild(button);
+
+        return div;
+    }
+
+    #renderChecklistItems() {
+        const div = document.createElement("div");
+
+        const h1 = document.createElement("h1");
+        h1.textContent = "Checklist";
+        div.appendChild(h1);
+
+        const section = document.createElement("section");
+        section.className = "checklist";
+        div.appendChild(section);
+
+        const ul = document.createElement("ul");
+        ul.className = "checklist-items";
+        section.appendChild(ul);
+
+        return div;
+    }
+
+    addChecklistItem() {
+        const checklistItem = document.querySelector("#checklist");
+        const ul = document.querySelector(".checklist-items");
+        this.#renderChecklistItem(ul, checklistItem.value)
+        checklistItem.value = null;
+        checklistItem.focus();
+    }
+
+    #renderChecklistItem(ul, checklistItem) {
+        const li = document.createElement("li");
+        li.className = "checklist-item";
+
+        const input = document.createElement("input");
+        input.value = checklistItem;
+        input.name = "checklist";
+        input.readOnly = true;
+        li.appendChild(input);
+
+        const editBtn = document.createElement("button")
+        editBtn.textContent = "Edit";
+        editBtn.className = checklist.EDIT_CHECKLIST;
+        li.appendChild(editBtn);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = checklist.DELETE_CHECKLIST;
+        li.appendChild(deleteBtn);
+
+        const saveBtn = document.createElement("button");
+        saveBtn.className = "save-checklist hide";
+        saveBtn.textContent = "Save";
+        li.appendChild(saveBtn); 
+
+        ul.appendChild(li);
+    }
+
     #renderButtons() {
         const buttonInfo = [
             {
@@ -202,11 +280,13 @@ export class AddTaskDialog {
     }
 
     readTaskDataInput() {
+
         return {
             title: document.querySelector("#title").value,
             description: document.querySelector("#description").value,
             dueDate: document.querySelector("#due-date").value,
             priority: document.querySelector("#priority").checked,
+            checklist: document.querySelectorAll(".checklist-item"),
         }
     }
 }
@@ -473,4 +553,16 @@ export function clearContent(parentElement) {
 
 export function closeModal(modal) {
     modal.close();
+}
+
+export function createUndoToast() {
+    const toast = document.createElement("div");
+    toast.textContent = "Checklist has been deleted";
+    
+    const button = document.createElement("button");
+    button.textContent = "Undo";
+    button.id = "undo";
+    toast.appendChild(button);
+
+    return toast;
 }

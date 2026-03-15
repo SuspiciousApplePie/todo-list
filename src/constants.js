@@ -24,3 +24,10 @@ export const editTodoModal = {
     CLOSE_EDIT_TODO_MODAL: "close-edit-todo-modal",
     EDIT_TODO: "edit-todo",
 }
+
+export const checklist = {
+    ADD_CHECKLIST: "add-checklist",
+    DELETE_CHECKLIST: "delete-checklist",
+    EDIT_CHECKLIST: "edit-checklist",
+    SAVE_CHECKLIST: "save-checklist",
+}
