@@ -555,9 +555,10 @@ export function closeModal(modal) {
     modal.close();
 }
 
-export function createUndoToast() {
+export function createUndoToast(timeoutId) {
     const toast = document.createElement("div");
     toast.textContent = "Checklist has been deleted";
+    toast.id = timeoutId;
     
     const button = document.createElement("button");
     button.textContent = "Undo";

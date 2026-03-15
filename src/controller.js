@@ -12,7 +12,7 @@ export class Controller {
         this.addProjectDialog = new AddProjectDialog();
         this.editTodoDialog = new EditTodoModal();
         this.deleteTodoDialog = new DeleteModal("Todo");
-        this.pendingDeletion = { element: null, timeoutId: null };
+        this.pendingDeletion = [];
         this.setUpListener();
     }
 
@@ -59,24 +59,35 @@ export class Controller {
             } else if (e.target.id === checklist.ADD_CHECKLIST) {
                 State.addChecklistItem(this.addTaskDialog);
             } else if (e.target.className === checklist.DELETE_CHECKLIST) {
-                const undoToast = createUndoToast();
+                const pendingElement = e.target.parentElement;
+                pendingElement.classList.toggle("hide");
 
-                e.target.parentElement.parentElement.parentElement.parentElement.appendChild(undoToast);
-                this.pendingDeletion.element = e.target.parentElement;
-                this.pendingDeletion.element.classList.toggle("hide");
-
-                this.pendingDeletion.timeoutId = setTimeout(() => {
+                const timeoutId = setTimeout(() => {
                     State.deleteChecklistItem(e);
+                    const pendingDeletion = this.pendingDeletion.filter(pending => {
+                        if (pending.timeoutId === timeoutId) {
+                            return;
+                        }
+                        return pending;
+                    });
                     undoToast.remove();
-                    this.pendingDeletion.timeoutId = null;
-                    this.pendingDeletion.element = null;
+                    this.pendingDeletion = pendingDeletion;
                 }, 5000);
+                const undoToast = createUndoToast(timeoutId);
+                e.target.parentElement.parentElement.parentElement.parentElement.appendChild(undoToast);
+                this.pendingDeletion.push({timeoutId: timeoutId, pendingElement: pendingElement})
+
             } else if (e.target.id === "undo") {
-                this.pendingDeletion.element.classList.toggle("hide");
-                clearTimeout(this.pendingDeletion.timeoutId);
-                e.target.parentElement.remove();
-                this.pendingDeletion.timeoutId = null;
-                this.pendingDeletion.element = null;
+                const pendingDeletion = this.pendingDeletion.filter(pending => {
+                    if (pending.timeoutId === Number(e.target.parentElement.id)) {
+                        clearTimeout(pending.timeoutId);
+                        pending.pendingElement.classList.toggle("hide");
+                        e.target.parentElement.remove();
+                        return;
+                    }
+                    return pending;
+                });
+                this.pendingDeletion = pendingDeletion;
             } else if (e.target.className === checklist.EDIT_CHECKLIST) {
                 State.editChecklist(e);
             } else if (e.target.classList.contains(checklist.SAVE_CHECKLIST)) {
