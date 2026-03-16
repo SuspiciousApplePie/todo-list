@@ -1,7 +1,8 @@
 import { Storage } from "./storage";
-import { clearContent, closeModal, EditTodoModal, createUndoToast } from "./ui";
+import { clearContent, closeModal, EditTodoModal, createUndoToast, ChecklistComponent } from "./ui";
 import { Project, ProjectOperation } from "./project";
 import { Todo, TodoOperation, Checklist } from "./todo";
+import { parseISO } from "date-fns";
 
 export class State {
     static selectProject(main, nav, task, projectId) {
@@ -22,6 +23,7 @@ export class State {
     static createNewTodo(projectId, addTaskDialog, nav, task, main) {
         const todoData = addTaskDialog.readTaskDataInput();
         const checklist = Checklist.convertToChecklistObj(todoData.checklist);
+        if(todoData.dueDate) todoData.dueDate = parseISO(todoData.dueDate);
         const todo = new Todo(todoData.title, todoData.description, todoData.dueDate, todoData.priority, checklist);
         const project = Storage.getProject(projectId);
         ProjectOperation.addTask(project, todo);

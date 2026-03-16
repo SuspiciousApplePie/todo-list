@@ -1,24 +1,21 @@
 import { parseISO } from "date-fns";
 
 export class Todo {
-    constructor(title, description, dueDate, priority, checkList) {
-        this.id = crypto.randomUUID();
+    constructor(title, description, dueDate, priority, checkList, id=crypto.randomUUID()) {
+        this.id = id;
         this.title = title;
         this.description = description;
-        this.dueDate = parseISO(dueDate);
+        this.dueDate = dueDate;
         this.priority = priority;
         this.checkList = checkList;
     }
 }
 
 export class TodoOperation {
-    static editTodo(todo, updatedTodoData) {
-        todo.title = updatedTodoData.title;
-        todo.description = updatedTodoData.description;
-        if(updatedTodoData.dueDate) todo.dueDate = parseISO(updatedTodoData.dueDate);
-        todo.priority = updatedTodoData.priority;
-
-        return todo;
+    static editTodo(todo, updatedTodoData, checklist) {
+        if(updatedTodoData.dueDate) parseISO(updatedTodoData.dueDate);
+        const newTodo = new Todo(updatedTodoData.title, updatedTodoData.description, updatedTodoData.dueDate, updatedTodoData.priority, checklist, todo.id);
+        return newTodo;
     }
 }
 
