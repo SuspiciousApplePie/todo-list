@@ -106,8 +106,8 @@ export class AddTaskDialog {
         dialog.appendChild(this.#renderDescriptionField());
         dialog.appendChild(this.#renderDueDate());
         dialog.appendChild(this.#renderPriority());
-        dialog.appendChild(this.#renderChecklistField());
-        dialog.appendChild(this.#renderChecklistItems());
+        dialog.appendChild(ChecklistComponent.renderChecklistField());
+        dialog.appendChild(ChecklistComponent.renderChecklistItems());
         dialog.appendChild(this.#renderButtons());
         this.main.appendChild(dialog);
         return dialog; 
@@ -180,79 +180,9 @@ export class AddTaskDialog {
         return div;
     }
 
-    #renderChecklistField() {
-        const div = document.createElement("div");
-        const label = document.createElement("label");
-        label.textContent = "Add Checklist";
-        label.htmlFor = "checklist";
-        div.appendChild(label);
 
-        const input = document.createElement("input");
-        input.type = "text";
-        input.id = label.htmlFor;
-        div.appendChild(input);
 
-        const button = document.createElement("button");
-        button.textContent = "Add Checklist";
-        button.id = checklist.ADD_CHECKLIST;
-        div.appendChild(button);
 
-        return div;
-    }
-
-    #renderChecklistItems() {
-        const div = document.createElement("div");
-
-        const h1 = document.createElement("h1");
-        h1.textContent = "Checklist";
-        div.appendChild(h1);
-
-        const section = document.createElement("section");
-        section.className = "checklist";
-        div.appendChild(section);
-
-        const ul = document.createElement("ul");
-        ul.className = "checklist-items";
-        section.appendChild(ul);
-
-        return div;
-    }
-
-    addChecklistItem() {
-        const checklistItem = document.querySelector("#checklist");
-        const ul = document.querySelector(".checklist-items");
-        this.#renderChecklistItem(ul, checklistItem.value)
-        checklistItem.value = null;
-        checklistItem.focus();
-    }
-
-    #renderChecklistItem(ul, checklistItem) {
-        const li = document.createElement("li");
-        li.className = "checklist-item";
-
-        const input = document.createElement("input");
-        input.value = checklistItem;
-        input.name = "checklist";
-        input.readOnly = true;
-        li.appendChild(input);
-
-        const editBtn = document.createElement("button")
-        editBtn.textContent = "Edit";
-        editBtn.className = checklist.EDIT_CHECKLIST;
-        li.appendChild(editBtn);
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Delete";
-        deleteBtn.className = checklist.DELETE_CHECKLIST;
-        li.appendChild(deleteBtn);
-
-        const saveBtn = document.createElement("button");
-        saveBtn.className = "save-checklist hide";
-        saveBtn.textContent = "Save";
-        li.appendChild(saveBtn); 
-
-        ul.appendChild(li);
-    }
 
     #renderButtons() {
         const buttonInfo = [
@@ -435,6 +365,9 @@ export class EditTodoModal {
         dialog.appendChild(this.#createDescriptionField(todo.description));
         dialog.appendChild(this.#createDueDate(todo.dueDate));
         dialog.appendChild(this.#createPriority(todo.priority));
+        dialog.appendChild(ChecklistComponent.renderChecklistField());
+        dialog.appendChild(ChecklistComponent.renderChecklistItems());
+        dialog.appendChild(ChecklistComponent.renderExistingChecklist(todo.checkList));
         dialog.appendChild(this.#createButtons());
         this.main.appendChild(dialog);
         return dialog;
@@ -543,7 +476,133 @@ export class EditTodoModal {
             description: document.querySelector("#description").value,
             dueDate: document.querySelector("#due-date").value,
             priority: document.querySelector("#priority").checked,
+            newChecklistItem: document.querySelectorAll(".checklist-item"),
+            existingChecklistItem: document.querySelectorAll(".existing-checklist-item"),
         }
+    }
+}
+
+export class ChecklistComponent {
+    static renderChecklistField() {
+        const div = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = "Add Checklist";
+        label.htmlFor = "checklist";
+        div.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = label.htmlFor;
+        div.appendChild(input);
+
+        const button = document.createElement("button");
+        button.textContent = "Add Checklist";
+        button.id = checklist.ADD_CHECKLIST;
+        div.appendChild(button);
+
+        return div;
+    }
+
+    static renderChecklistItems() {
+        const div = document.createElement("div");
+
+        const h1 = document.createElement("h1");
+        h1.textContent = "Checklist";
+        div.appendChild(h1);
+
+        const section = document.createElement("section");
+        section.className = "checklist";
+        div.appendChild(section);
+
+        const ul = document.createElement("ul");
+        ul.className = "checklist-items";
+        section.appendChild(ul);
+
+        return div;
+    }
+
+    static addChecklistItem(e) {
+        const dialog = e.target.closest("dialog");
+        const checklistItem = dialog.querySelector("#checklist");
+        const ul = dialog.querySelector(".checklist-items");
+        ChecklistComponent.#renderChecklistItem(ul, checklistItem.value)
+        checklistItem.value = null;
+        checklistItem.focus();
+    }
+
+    static #renderChecklistItem(ul, checklistItem) {
+        const li = document.createElement("li");
+        li.className = "checklist-item";
+
+        const input = document.createElement("input");
+        input.value = checklistItem;
+        input.className = "checklist-title-field";
+        input.name = "checklist";
+        input.readOnly = true;
+        li.appendChild(input);
+
+        const editBtn = document.createElement("button")
+        editBtn.textContent = "Edit";
+        editBtn.className = checklist.EDIT_CHECKLIST;
+        li.appendChild(editBtn);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = checklist.DELETE_CHECKLIST;
+        li.appendChild(deleteBtn);
+
+        const saveBtn = document.createElement("button");
+        saveBtn.className = "save-checklist hide";
+        saveBtn.textContent = "Save";
+        li.appendChild(saveBtn); 
+
+        ul.appendChild(li);
+    }
+
+    static renderExistingChecklist(checklistInfo) {
+        const div = document.createElement("div");
+        const ul = document.createElement("ul");
+        ul.className = "existing-checklist";
+
+        checklistInfo.forEach(item => {
+            const li = document.createElement("li");
+            li.className = "existing-checklist-item";
+            li.dataset.checkListId = item.id;
+
+            const title = document.createElement("input");
+            title.value = item.title;
+            title.textContent = item.title;
+            title.readOnly = true;
+            title.className = "checklist-title-field";
+            title.name = "checklist";
+            li.appendChild(title);
+
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.className = "checklist-status";
+            input.checked = item.status;
+            li.appendChild(input);
+
+            const editBtn = document.createElement("button")
+            editBtn.textContent = "Edit";
+            editBtn.className = checklist.EDIT_CHECKLIST;
+            li.appendChild(editBtn);
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.className = checklist.DELETE_CHECKLIST;
+            li.appendChild(deleteBtn);
+
+            const saveBtn = document.createElement("button");
+            saveBtn.className = "save-checklist hide";
+            saveBtn.textContent = "Save";
+            li.appendChild(saveBtn); 
+
+            ul.appendChild(li);
+            div.appendChild(ul);
+        })
+
+        return div;
     }
 }
 

@@ -66,10 +66,16 @@ export class State {
 
     static editTodo(projectId, todoId, editTaskDialog, nav, task, main) {
         const editedTodoData = editTaskDialog.readUpdatedTodoData();
+
+        const newChecklist = Checklist.convertToChecklistObj(editedTodoData.newChecklistItem);
+        const checklist = Checklist.convertToObj(editedTodoData.existingChecklistItem);
+        const updatedChecklist = checklist.concat(newChecklist);
+
         const project = Storage.getProject(projectId);
         const selectedTodo = Storage.readTodo(project.toDos, todoId);
-        const editedTodo = TodoOperation.editTodo(selectedTodo, editedTodoData);
+        const editedTodo = TodoOperation.editTodo(selectedTodo, editedTodoData, updatedChecklist);
         const updatedTodo = Storage.updateProjectTodoList(project.toDos, editedTodo, todoId);
+        
         project.toDos = updatedTodo;
         Storage.saveProject(project);
         clearContent(main);
@@ -77,24 +83,28 @@ export class State {
         task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
     }
 
-    static addChecklistItem(addTodoDialog) {
-        addTodoDialog.addChecklistItem();
+    static addChecklistItem(e) {
+        ChecklistComponent.addChecklistItem(e)
     }
 
     static deleteChecklistItem(e) {
         e.target.parentElement.remove();
     }
 
-    static editChecklist(e) {
-        const input = e.target.previousElementSibling;
+    static editChecklist(e) {     
+        const li = e.target.parentElement;
+        const input = li.querySelector(".checklist-title-field");
+        const saveBtn = li.querySelector(".save-checklist");
         input.readOnly = false;
         e.target.disabled = true;
-        e.target.nextElementSibling.nextElementSibling.classList.toggle("hide");
+        saveBtn.classList.toggle("hide");
     }
 
     static saveChecklist(e) {
-        e.target.previousElementSibling.previousElementSibling.previousElementSibling.readOnly = true;
-        e.target.previousElementSibling.previousElementSibling.disabled = false;
+        const title = e.target.closest("li").querySelector(".checklist-title-field");
+        const editBtn = e.target.closest("li").querySelector(".edit-checklist")
+        title.readOnly = true;
+        editBtn.disabled = false;
         e.target.classList.toggle("hide");
     }
 }

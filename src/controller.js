@@ -57,9 +57,9 @@ export class Controller {
                 const todoId = e.target.parentElement.parentElement.dataset.todoId;
                 State.editTodo(projectId, todoId, this.editTodoDialog, this.nav, this.task, this.main);
             } else if (e.target.id === checklist.ADD_CHECKLIST) {
-                State.addChecklistItem(this.addTaskDialog);
+                State.addChecklistItem(e);
             } else if (e.target.className === checklist.DELETE_CHECKLIST) {
-                const pendingElement = e.target.parentElement;
+                const pendingElement = e.target.closest("li");
                 pendingElement.classList.toggle("hide");
 
                 const timeoutId = setTimeout(() => {
@@ -74,7 +74,7 @@ export class Controller {
                     this.pendingDeletion = pendingDeletion;
                 }, 5000);
                 const undoToast = createUndoToast(timeoutId);
-                e.target.parentElement.parentElement.parentElement.parentElement.appendChild(undoToast);
+                e.target.closest("dialog").appendChild(undoToast);
                 this.pendingDeletion.push({timeoutId: timeoutId, pendingElement: pendingElement})
 
             } else if (e.target.id === "undo") {

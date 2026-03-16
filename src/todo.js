@@ -24,19 +24,31 @@ export class TodoOperation {
 
 
 export class Checklist {
-    constructor(title) {
-        this.id = crypto.randomUUID();
+    constructor(title, id=crypto.randomUUID(), status=false) {
+        this.id = id;
         this.title = title;
-        this.status = false;
+        this.status = status;
     }
 
     static convertToChecklistObj(checklistData) {
         const checklist = [];
         checklistData.forEach(element => {
             const title = element.firstChild.value;
-            const newChecklist = new Checklist(title);
+            const newChecklist = new Checklist(title);S
             checklist.push(newChecklist);
         });
+
+        return checklist;
+    }
+
+    static convertToObj(checklistItems) {
+        const checklist = [];
+        checklistItems.forEach(element => {
+            const id = element.dataset.checkListId;
+            const title = element.querySelector(".checklist-title-field").value;
+            const status = element.querySelector(".checklist-status").checked;
+            checklist.push(new Checklist(title, id, status));
+        })
 
         return checklist;
     }
