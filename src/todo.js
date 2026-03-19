@@ -31,7 +31,7 @@ export class Checklist {
         const checklist = [];
         checklistData.forEach(element => {
             const title = element.firstChild.value;
-            const newChecklist = new Checklist(title);S
+            const newChecklist = new Checklist(title);
             checklist.push(newChecklist);
         });
 

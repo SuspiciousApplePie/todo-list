@@ -36,8 +36,8 @@ export class Controller {
                 State.createNewProject(this.addProjectDialog, this.nav, this.task, this.main);
             } else if (e.target.className === deleteTodoModal.OPEN_DELETE_MODAL) {
                 const project = e.target.parentElement.parentElement.dataset.projectId;
-                const todo = e.target.previousElementSibling.previousElementSibling.dataset.taskId;
-                const title = e.target.previousElementSibling.previousElementSibling.textContent;
+                const todo = e.target.parentElement.querySelector("h1").dataset.taskId;
+                const title = e.target.parentElement.querySelector("h1").textContent;
                 State.showDeleteModal(this.deleteTodoDialog, title, project, todo);
             } else if (e.target.id === deleteTodoModal.CLOSE_DELETE_MODAL) {
                 State.closeModal(e.target.parentElement.parentElement);
@@ -47,7 +47,7 @@ export class Controller {
                 State.deleteTodo(projectId, todoId, this.nav, this.task, this.main);
             } else if (e.target.className === editTodoModal.OPEN_EDIT_TODO_MODAL) {
                 const project = e.target.parentElement.parentElement.dataset.projectId;
-                const todo = e.target.previousElementSibling.dataset.taskId;
+                const todo = e.target.parentElement.querySelector("h1").dataset.taskId;
                 State.showEditTodoModal(todo, project, this.editTodoDialog);
             } else if (e.target.id === editTodoModal.CLOSE_EDIT_TODO_MODAL) {
                 const dialog = e.target.parentElement.parentElement;

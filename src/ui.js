@@ -1,6 +1,5 @@
 import { Storage } from "./storage";
 import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist } from "./constants";
-import { Checklist } from "./todo";
 import { format } from "date-fns";
 import "./styles.css";
 
@@ -52,6 +51,9 @@ export class TaskDisplay {
         tasks.task.forEach(task => {
             const taskElement = document.createElement("div");
             taskElement.appendChild(this.#renderName(task));
+            taskElement.appendChild(this.#renderDueDate(task));
+            taskElement.appendChild(this.#renderDescription(task));
+            taskElement.appendChild(this.#renderChecklist(task));
             taskElement.appendChild(this.#renderEditButton());
             taskElement.appendChild(this.#renderDeleteButton());
             taskWrapper.appendChild(taskElement);
@@ -69,6 +71,60 @@ export class TaskDisplay {
         const element = document.createElement("h1");
         element.dataset.taskId = task.id;
         element.textContent = task.title;
+        return element;
+    }
+
+    #renderDueDate(task) {
+        const element = document.createElement("p");
+        element.textContent = `Deadline:`;
+        element.className = "due-date";
+
+        if(task.dueDate) {
+            const time = document.createElement("time");
+            time.dateTime = format(task.dueDate, "yyyy-MM-dd");
+            time.textContent = format(task.dueDate, "MMMM dd, yyyy");
+
+            element.appendChild(time);
+        } else {
+            element.textContent += "Not set";
+        }
+
+        return element;
+    }
+
+    #renderDescription(task) {
+        const element = document.createElement("p");
+        element.textContent = task.description;
+        element.className = "description";
+
+        return element;
+    }
+
+    #renderChecklist(task) {
+        const element = document.createElement("div");
+        const h1 = document.createElement("h1");
+        const wrapper = document.createElement("section");
+
+        h1.textContent = "Checklist";
+
+        element.appendChild(h1);
+        element.appendChild(wrapper);
+
+        task.checkList.forEach(item => {
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.checked = item.status;
+            input.name = item.id;
+            input.disabled = true;
+
+            const label = document.createElement("label");
+            label.htmlFor = item.id;
+            label.textContent = item.title;
+
+            wrapper.appendChild(input);
+            wrapper.appendChild(label);
+        })
+
         return element;
     }
 
