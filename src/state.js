@@ -7,8 +7,24 @@ import { parseISO } from "date-fns";
 export class State {
     static selectProject(main, nav, task, projectId) {
         clearContent(main);
-        nav.renderNavBar(Storage.readProjectNames());
-        task.renderTask(Storage.readAllTask(Storage.getProject(projectId)));
+        const projectList = Storage.readProjectNames();
+        nav.renderNavBar(projectList);
+        
+        const project = Storage.getProject(projectId);
+
+        if (!project) {
+            State.refresh(main, nav);
+            return;
+        }
+
+        const tasks = Storage.readAllTask(project);
+
+        if (!tasks) {
+            State.refresh(main, nav);
+            return;
+        }
+
+        task.renderTask(tasks);
     }
 
     static showTodoModal(addTaskDialog) {
@@ -27,7 +43,14 @@ export class State {
         const checklist = Checklist.convertToChecklistObj(todoData.checklist);
         if(todoData.dueDate) todoData.dueDate = parseISO(todoData.dueDate);
         const todo = new Todo(todoData.title, todoData.description, todoData.dueDate, priority, checklist);
+
         const project = Storage.getProject(projectId);
+        
+        if (!project) {
+            State.refresh(main, nav);
+            return;
+        }
+
         ProjectOperation.addTask(project, todo);
         Storage.saveProject(project);
         clearContent(main);
@@ -54,6 +77,12 @@ export class State {
 
     static deleteTodo(projectId, todoId, nav, task, main) {
         const project = Storage.getProject(projectId);
+
+        if (!project) {
+            State.refresh(main, nav);
+            return;
+        }
+
         const updatedTodo = Storage.deleteTodo(project.toDos, todoId)
         project.toDos = updatedTodo;
         Storage.saveProject(project);
@@ -62,9 +91,20 @@ export class State {
         task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
     }
 
-    static showEditTodoModal(todoId, projectId, editTaskDialog) {
+    static showEditTodoModal(main, nav, todoId, projectId, editTaskDialog) {
         const project = Storage.getProject(projectId);
+
+        if (!project) {
+            State.refresh(main, nav);
+            return;
+        }
         const selectedTodo = Storage.readTodo(project.toDos, todoId);
+
+        if(!selectedTodo) {
+            State.refresh(main, nav);
+            return;
+        }
+
         editTaskDialog.renderEditTodoModal(projectId, todoId, selectedTodo);
     }
 
@@ -80,7 +120,21 @@ export class State {
         const updatedChecklist = checklist.concat(newChecklist);
 
         const project = Storage.getProject(projectId);
+
+        if (!project) {
+            State.refresh(main, nav);
+            return;
+        }
+        
         const selectedTodo = Storage.readTodo(project.toDos, todoId);
+
+        if(!selectedTodo) {
+            State.refresh(main, nav);
+            const tasks = Storage.readTodo(projectId);
+            task.renderTask(tasks);
+            return;
+        }
+
         const editedTodo = TodoOperation.editTodo(selectedTodo, editedTodoData, updatedChecklist);
         const updatedTodo = Storage.updateProjectTodoList(project.toDos, editedTodo, todoId);
         
@@ -114,5 +168,10 @@ export class State {
         title.readOnly = true;
         editBtn.disabled = false;
         e.target.classList.toggle("hide");
+    }
+
+    static refresh(main, nav)  {
+        clearContent(main);
+        nav.renderNavBar(Storage.readProjectNames());
     }
 }

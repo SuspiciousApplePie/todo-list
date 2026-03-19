@@ -48,7 +48,7 @@ export class Controller {
             } else if (e.target.className === editTodoModal.OPEN_EDIT_TODO_MODAL) {
                 const project = e.target.parentElement.parentElement.dataset.projectId;
                 const todo = e.target.parentElement.querySelector("h1").dataset.taskId;
-                State.showEditTodoModal(todo, project, this.editTodoDialog);
+                State.showEditTodoModal(this.main, this.nav, todo, project, this.editTodoDialog);
             } else if (e.target.id === editTodoModal.CLOSE_EDIT_TODO_MODAL) {
                 const dialog = e.target.parentElement.parentElement;
                 State.closeModal(dialog);
