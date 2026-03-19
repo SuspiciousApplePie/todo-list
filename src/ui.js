@@ -198,9 +198,8 @@ export class AddTaskDialog {
         label.htmlFor = "description";
         div.appendChild(label);
 
-        const input = document.createElement("input");
+        const input = document.createElement("textarea");
         input.id = "description";
-        input.type = 30;
         div.appendChild(input);
 
         return div;
@@ -460,9 +459,8 @@ export class EditTodoModal {
         label.htmlFor = "description";
         div.appendChild(label);
 
-        const input = document.createElement("input");
+        const input = document.createElement("textarea");
         input.id = "description";
-        input.type = 30;
         input.value = description;
         div.appendChild(input);
 
