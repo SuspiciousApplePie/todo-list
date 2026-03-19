@@ -117,7 +117,7 @@ export class TaskDisplay {
                 const input = document.createElement("input");
                 input.type = "checkbox";
                 input.checked = item.status;
-                input.name = item.id;
+                input.id = item.id;
                 input.disabled = true;
 
                 const label = document.createElement("label");
