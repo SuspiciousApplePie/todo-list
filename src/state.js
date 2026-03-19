@@ -22,9 +22,11 @@ export class State {
 
     static createNewTodo(projectId, addTaskDialog, nav, task, main) {
         const todoData = addTaskDialog.readTaskDataInput();
+        const priorities = todoData.priority.querySelectorAll("input");
+        const priority = TodoOperation.getPriority(priorities);
         const checklist = Checklist.convertToChecklistObj(todoData.checklist);
         if(todoData.dueDate) todoData.dueDate = parseISO(todoData.dueDate);
-        const todo = new Todo(todoData.title, todoData.description, todoData.dueDate, todoData.priority, checklist);
+        const todo = new Todo(todoData.title, todoData.description, todoData.dueDate, priority, checklist);
         const project = Storage.getProject(projectId);
         ProjectOperation.addTask(project, todo);
         Storage.saveProject(project);
@@ -69,6 +71,10 @@ export class State {
     static editTodo(projectId, todoId, editTaskDialog, nav, task, main) {
         const editedTodoData = editTaskDialog.readUpdatedTodoData();
 
+        const priorities = editedTodoData.priority.querySelectorAll("input");
+
+        const priority = TodoOperation.getPriority(priorities);
+        editedTodoData.priority = priority;
         const newChecklist = Checklist.convertToChecklistObj(editedTodoData.newChecklistItem);
         const checklist = Checklist.convertToObj(editedTodoData.existingChecklistItem);
         const updatedChecklist = checklist.concat(newChecklist);

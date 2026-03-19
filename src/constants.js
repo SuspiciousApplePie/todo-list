@@ -31,3 +31,9 @@ export const checklist = {
     EDIT_CHECKLIST: "edit-checklist",
     SAVE_CHECKLIST: "save-checklist",
 }
+
+export const priorityLevel = {
+    LOW: 0,
+    MEDIUM: 1,
+    HIGH: 2,
+}

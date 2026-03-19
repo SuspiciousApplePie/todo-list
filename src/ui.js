@@ -1,5 +1,5 @@
 import { Storage } from "./storage";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel } from "./constants";
 import { format } from "date-fns";
 import "./styles.css";
 
@@ -226,22 +226,55 @@ export class AddTaskDialog {
 
     #renderPriority() {
         const div = document.createElement("div");
-        const label = document.createElement("label");
-        label.textContent = "Priority";
-        label.htmlFor = "priority";
-        div.appendChild(label);
 
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.id = "priority";
-        div.appendChild(input);
+        const fieldset = document.createElement("fieldset");
+        fieldset.className = "priority-field";
+        const legend = document.createElement("legend");
+        
+        legend.textContent = "Select the priority level";
+        fieldset.appendChild(legend);
+        div.appendChild(fieldset);
+        const fields = [
+            {
+                id: "low",
+                text: "Low",
+                level: priorityLevel.LOW,
+            },
+            {
+                id: "medium",
+                text: "Medium",
+                level: priorityLevel.MEDIUM,
+            },
+            {
+                id: "high",
+                text: "High",
+                level: priorityLevel.HIGH,
+            }
+        ];
+
+        fields.forEach(field => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "choice";
+            
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.id = field.id;
+            input.name = "choice";
+            input.value = field.level;
+
+            const label = document.createElement("label");
+            label.htmlFor = field.id;
+            label.textContent = field.text;
+
+            wrapper.appendChild(input);
+            wrapper.appendChild(label);
+            fieldset.appendChild(wrapper);
+        }); 
+
+        fieldset.querySelector("input").checked = true;
 
         return div;
     }
-
-
-
-
 
     #renderButtons() {
         const buttonInfo = [
@@ -274,7 +307,7 @@ export class AddTaskDialog {
             title: document.querySelector("#title").value,
             description: document.querySelector("#description").value,
             dueDate: document.querySelector("#due-date").value,
-            priority: document.querySelector("#priority").checked,
+            priority: document.querySelector(".priority-field"),
             checklist: document.querySelectorAll(".checklist-item"),
         }
     }
@@ -489,16 +522,52 @@ export class EditTodoModal {
 
     #createPriority(priority) {
         const div = document.createElement("div");
-        const label = document.createElement("label");
-        label.textContent = "Priority";
-        label.htmlFor = "priority";
-        div.appendChild(label);
 
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.id = "priority";
-        input.checked = priority;
-        div.appendChild(input);
+        const fieldset = document.createElement("fieldset");
+        fieldset.className = "priority-field";
+        const legend = document.createElement("legend");
+        
+        legend.textContent = "Select the priority level";
+        fieldset.appendChild(legend);
+        div.appendChild(fieldset);
+        const fields = [
+            {
+                id: "low",
+                text: "Low",
+                level: priorityLevel.LOW,
+            },
+            {
+                id: "medium",
+                text: "Medium",
+                level: priorityLevel.MEDIUM,
+            },
+            {
+                id: "high",
+                text: "High",
+                level: priorityLevel.HIGH,
+            }
+        ];
+
+        fields.forEach(field => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "choice";
+            
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.id = field.id;
+            input.name = "choice";
+            input.value = field.level;
+
+            if (input.value === priority) input.checked = true;
+
+            const label = document.createElement("label");
+            label.htmlFor = field.id;
+            label.textContent = field.text;
+
+            wrapper.appendChild(input);
+            wrapper.appendChild(label);
+            fieldset.appendChild(wrapper);
+        }); 
 
         return div;
     }
@@ -533,7 +602,7 @@ export class EditTodoModal {
             title: document.querySelector("#title").value,
             description: document.querySelector("#description").value,
             dueDate: document.querySelector("#due-date").value,
-            priority: document.querySelector("#priority").checked,
+            priority: document.querySelector(".priority-field"),
             newChecklistItem: document.querySelectorAll(".checklist-item"),
             existingChecklistItem: document.querySelectorAll(".existing-checklist-item"),
         }

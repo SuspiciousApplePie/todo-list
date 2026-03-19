@@ -1,7 +1,8 @@
 import { parseISO } from "date-fns";
+import { priorityLevel } from "./constants";
 
 export class Todo {
-    constructor(title, description, dueDate, priority, checkList, id=crypto.randomUUID()) {
+    constructor(title, description, dueDate, priority=priorityLevel.LOW, checkList, id=crypto.randomUUID()) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -16,6 +17,15 @@ export class TodoOperation {
         if(updatedTodoData.dueDate) parseISO(updatedTodoData.dueDate);
         const newTodo = new Todo(updatedTodoData.title, updatedTodoData.description, updatedTodoData.dueDate, updatedTodoData.priority, checklist, todo.id);
         return newTodo;
+    }
+
+    static getPriority(priorities) {
+        let priority = null;
+        priorities.forEach(field => {
+            if(field.checked) priority = field.value;
+        })
+
+        return priority;
     }
 }
 
