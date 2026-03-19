@@ -110,20 +110,24 @@ export class TaskDisplay {
         element.appendChild(h1);
         element.appendChild(wrapper);
 
-        task.checkList.forEach(item => {
-            const input = document.createElement("input");
-            input.type = "checkbox";
-            input.checked = item.status;
-            input.name = item.id;
-            input.disabled = true;
+        if(task.checkList.length === 0) {
+            wrapper.textContent = "No Checklist found.";
+        } else {
+            task.checkList.forEach(item => {
+                const input = document.createElement("input");
+                input.type = "checkbox";
+                input.checked = item.status;
+                input.name = item.id;
+                input.disabled = true;
 
-            const label = document.createElement("label");
-            label.htmlFor = item.id;
-            label.textContent = item.title;
+                const label = document.createElement("label");
+                label.htmlFor = item.id;
+                label.textContent = item.title;
 
-            wrapper.appendChild(input);
-            wrapper.appendChild(label);
-        })
+                wrapper.appendChild(input);
+                wrapper.appendChild(label);
+            });
+        }
 
         return element;
     }
