@@ -20,6 +20,7 @@
     box-sizing: border-box;
 }
 
+/* Header */
 .header {
     display: grid;
     grid-template-columns: 48px 1fr;
@@ -53,4 +54,64 @@
 
 .hide {
     display: none;
+}
+
+/* Navbar */
+.main {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) 4fr;
+}
+
+.main nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 36px 1fr;
+    gap: 4px;
+    background-color: var(--secondary-color);
+    color: #49D056;
+    padding: 8px 8px 8px 2px;
+}
+
+.main nav h1 {
+    font-family: 'farmilia_-_personalregular', 'Courier New', Courier, monospace;
+    align-self: center;
+    font-size: 36px;
+}
+
+
+.main nav button {
+    cursor: pointer;
+    background-color: transparent;
+    width: 24px;
+    height: 24px;
+    align-self: center;
+    justify-self: end;
+    border: none;
+}
+
+.main nav button img:hover {
+    border: 2px solid var(--main-color);
+}
+
+.main nav ul {
+    font-family: 'Courier New', Courier, monospace;
+    grid-area: -1 / 1 / -1 / -1;
+    display: grid;
+}
+
+.main nav li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+nav::selection {
+    background-color: var(--tertiary-color);
+    color: var(--secondary-color);
+}
+
+.main nav li:hover,
+.selected {
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    font-weight: 900;
 }
