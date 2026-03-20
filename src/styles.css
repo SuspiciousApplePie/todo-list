@@ -6,12 +6,49 @@
     font-style: normal;
 }
 
+:root {
+    --main-color: #49D056;
+    --secondary-color: #8C271E;
+    --tertiary-color: #F1F2F3;
+}
+
 *,
 *::before,
 *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 4px;
+    justify-content: left;
+    padding: 8px;
+    font-family: 'farmilia_-_personalregular', 'Courier New', Courier, monospace;
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+}
+
+.header img {
+    width: 32px;
+    height: 32px;
+    justify-self: center;
+    align-self: center;
+}
+
+.header h1 {
+    display: flex;
+    align-items: center;
+    font-size: 48px;
+    padding: 4px;
+    letter-spacing: 4px;
+}
+
+.header::selection {
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
 }
 
 .hide {
