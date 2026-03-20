@@ -1,6 +1,6 @@
 import { NavBar, TaskDisplay, AddTaskDialog, AddProjectDialog, EditTodoModal, DeleteModal, createUndoToast } from "./ui";
 import { State } from "./state";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, viewButton } from "./constants";
 import { add } from "date-fns";
 
 export class Controller {
@@ -92,6 +92,8 @@ export class Controller {
                 State.editChecklist(e);
             } else if (e.target.classList.contains(checklist.SAVE_CHECKLIST)) {
                 State.saveChecklist(e);
+            } else if (e.target.classList.contains(viewButton.VIEW_TODO)) {
+                State.viewTodoDetails(e);
             }
         })
     };

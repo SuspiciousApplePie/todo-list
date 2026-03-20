@@ -37,3 +37,9 @@ export const priorityLevel = {
     MEDIUM: 1,
     HIGH: 2,
 }
+
+export const viewButton = {
+    VIEW_TODO: "view-button",
+    HIDE_TEXT: "Hide",
+    SHOW_TEXT: "View",
+}

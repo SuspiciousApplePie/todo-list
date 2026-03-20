@@ -1,5 +1,5 @@
 import { Storage } from "./storage";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel, viewButton } from "./constants";
 import { format } from "date-fns";
 import "./styles.css";
 
@@ -54,6 +54,7 @@ export class TaskDisplay {
             taskElement.appendChild(this.#renderDueDate(task));
             taskElement.appendChild(this.#renderDescription(task));
             taskElement.appendChild(this.#renderChecklist(task));
+            taskElement.appendChild(this.#renderViewButton(task));
             taskElement.appendChild(this.#renderEditButton());
             taskElement.appendChild(this.#renderDeleteButton());
             taskWrapper.appendChild(taskElement);
@@ -96,12 +97,15 @@ export class TaskDisplay {
         const element = document.createElement("p");
         element.textContent = task.description;
         element.className = "description";
+        element.classList.toggle("hide");
 
         return element;
     }
 
     #renderChecklist(task) {
         const element = document.createElement("div");
+        element.className = "checklist";
+        element.classList.toggle("hide")
         const h1 = document.createElement("h1");
         const wrapper = document.createElement("section");
 
@@ -129,6 +133,13 @@ export class TaskDisplay {
             });
         }
 
+        return element;
+    }
+
+    #renderViewButton() {
+        const element = document.createElement("button");
+        element.textContent = viewButton.SHOW_TEXT;
+        element.className = viewButton.VIEW_TODO;
         return element;
     }
 

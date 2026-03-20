@@ -3,6 +3,7 @@ import { clearContent, closeModal, EditTodoModal, createUndoToast, ChecklistComp
 import { Project, ProjectOperation } from "./project";
 import { Todo, TodoOperation, Checklist } from "./todo";
 import { parseISO } from "date-fns";
+import { viewButton } from "./constants";
 
 export class State {
     static selectProject(main, nav, task, projectId) {
@@ -168,6 +169,17 @@ export class State {
         title.readOnly = true;
         editBtn.disabled = false;
         e.target.classList.toggle("hide");
+    }
+
+    static viewTodoDetails(e) {
+        const todo = e.target.closest("div");
+        const description = todo.querySelector(".description").classList.toggle("hide");
+        const checklist = todo.querySelector(".checklist").classList.toggle("hide");
+        if (e.target.textContent === viewButton.SHOW_TEXT) {
+            e.target.textContent = viewButton.HIDE_TEXT;
+        } else {
+            e.target.textContent = viewButton.SHOW_TEXT;
+        }
     }
 
     static refresh(main, nav)  {
