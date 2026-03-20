@@ -1,5 +1,5 @@
 import { Storage } from "./storage";
-import { clearContent, closeModal, EditTodoModal, createUndoToast, ChecklistComponent } from "./ui";
+import { clearContent, closeModal, EditTodoModal, createUndoToast, ChecklistComponent, toggleSelectedProject } from "./ui";
 import { Project, ProjectOperation } from "./project";
 import { Todo, TodoOperation, Checklist } from "./todo";
 import { parseISO } from "date-fns";
@@ -10,6 +10,8 @@ export class State {
         clearContent(main);
         const projectList = Storage.readProjectNames();
         nav.renderNavBar(projectList);
+
+        toggleSelectedProject(main, projectId);
         
         const project = Storage.getProject(projectId);
 
@@ -56,6 +58,7 @@ export class State {
         Storage.saveProject(project);
         clearContent(main);
         nav.renderNavBar(Storage.readProjectNames());
+        toggleSelectedProject(main, projectId);
         task.renderTask(Storage.readAllTask(Storage.getProject(projectId)));
     }
 
@@ -69,6 +72,7 @@ export class State {
         Storage.saveProject(project);
         clearContent(main);
         nav.renderNavBar(Storage.readProjectNames());
+        toggleSelectedProject(main, project.id);
         task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
     }
 
@@ -89,6 +93,7 @@ export class State {
         Storage.saveProject(project);
         clearContent(main);
         nav.renderNavBar(Storage.readProjectNames());
+        toggleSelectedProject(main, projectId);
         task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
     }
 
@@ -143,6 +148,7 @@ export class State {
         Storage.saveProject(project);
         clearContent(main);
         nav.renderNavBar(Storage.readProjectNames());
+        toggleSelectedProject(main, projectId);
         task.renderTask(Storage.readAllTask(Storage.getProject(project.id)));
     }
 

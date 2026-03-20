@@ -6,7 +6,7 @@ import { add } from "date-fns";
 export class Controller {
     constructor() {
         this.main = document.querySelector(".main");
-        this.nav = new NavBar("Menu");
+        this.nav = new NavBar("Projects");
         this.task = new TaskDisplay();
         this.addTaskDialog = new AddTaskDialog();
         this.addProjectDialog = new AddProjectDialog();

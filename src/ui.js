@@ -2,6 +2,7 @@ import { Storage } from "./storage";
 import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel, viewButton } from "./constants";
 import { format } from "date-fns";
 import "./styles.css";
+import addIcon from "./img/add-icon.svg";
 
 export class NavBar {
     constructor(title) {
@@ -12,14 +13,18 @@ export class NavBar {
 
     renderNavBar(projects) {
         const nav = document.createElement("nav");
-        nav.textContent = this.title;
+
+        const h1 = document.createElement("h1");
+        h1.textContent = this.title;
+        nav.appendChild(h1);
         this.main.appendChild(nav);
         const ul = document.createElement("ul");
-        this.#renderAddButton(ul);
+        this.#renderAddButton(nav);
 
         if (projects.length) {
             projects.forEach(project => {
                 const li = document.createElement("li");
+                li.className = "project-item";
                 li.dataset.id = project.id;
                 li.textContent = project.name;
                 ul.appendChild(li);
@@ -29,16 +34,20 @@ export class NavBar {
             const p = document.createElement("p");
             p.textContent = "No projects found.";
             nav.appendChild(ul);
-            nav.appendChild(p);
+            ul.appendChild(p);
         }
 
         this.main.appendChild(this.#renderMessage());
     }
 
     #renderAddButton(ul) {
+        const image = document.createElement("img");
+        image.src = addIcon;
+        image.alt = "Add Project";
+        image.id = projectDialogInfo.OPEN_PROJECT_MODAL;
+
         const button = document.createElement("button");
-        button.textContent = "Add Project";
-        button.id = projectDialogInfo.OPEN_PROJECT_MODAL;
+        button.appendChild(image);
         ul.appendChild(button);
     }
 
@@ -784,4 +793,15 @@ export function createUndoToast(timeoutId) {
     toast.appendChild(button);
 
     return toast;
+}
+
+export function toggleSelectedProject(main, projectId) {
+    const projectList = main.querySelectorAll(".project-item");
+    projectList.forEach(item => {
+        if (item.dataset.id === projectId) {
+            item.classList.toggle("selected");
+        } else {
+            item.classList.remove("selected");
+        }
+    })
 }
