@@ -78,6 +78,9 @@
     font-size: 36px;
 }
 
+.main {
+    height: clamp(600px, 100vh, 1920px);
+}
 
 .main nav button {
     cursor: pointer;
@@ -95,13 +98,16 @@
 
 .main nav ul {
     font-family: 'Courier New', Courier, monospace;
-    grid-area: -1 / 1 / -1 / -1;
+    grid-area: 2 / 1 / -1 / -1;
     display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(36px, 1fr));
 }
 
 .main nav li {
     padding: 8px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 nav::selection {
@@ -115,3 +121,5 @@ nav::selection {
     color: var(--secondary-color);
     font-weight: 900;
 }
+
+/* Todo */
