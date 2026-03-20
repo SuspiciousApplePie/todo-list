@@ -14,19 +14,25 @@ export class NavBar {
         const nav = document.createElement("nav");
         nav.textContent = this.title;
         this.main.appendChild(nav);
-
         const ul = document.createElement("ul");
-
         this.#renderAddButton(ul);
 
-        projects.forEach(project => {
-            const li = document.createElement("li");
-            li.dataset.id = project.id;
-            li.textContent = project.name;
-            ul.appendChild(li);
-        });
+        if (projects.length) {
+            projects.forEach(project => {
+                const li = document.createElement("li");
+                li.dataset.id = project.id;
+                li.textContent = project.name;
+                ul.appendChild(li);
+                nav.appendChild(ul);
+            });
+        } else {
+            const p = document.createElement("p");
+            p.textContent = "No projects found.";
+            nav.appendChild(ul);
+            nav.appendChild(p);
+        }
 
-        nav.appendChild(ul);
+        this.main.appendChild(this.#renderMessage());
     }
 
     #renderAddButton(ul) {
@@ -34,6 +40,14 @@ export class NavBar {
         button.textContent = "Add Project";
         button.id = projectDialogInfo.OPEN_PROJECT_MODAL;
         ul.appendChild(button);
+    }
+
+    #renderMessage() {
+        const p = document.createElement("p");
+        p.textContent = "Select a project."
+        p.className = "no-project";
+
+        return p;
     }
 }
 
@@ -44,21 +58,28 @@ export class TaskDisplay {
     }
 
     renderTask(tasks) {
+        this.main.querySelector(".no-project").remove();
         const taskWrapper = document.createElement("div"); 
         taskWrapper.dataset.projectId = tasks.id;
         taskWrapper.appendChild(this.#renderAddButton());
         this.main.appendChild(taskWrapper);
-        tasks.task.forEach(task => {
-            const taskElement = document.createElement("div");
-            taskElement.appendChild(this.#renderName(task));
-            taskElement.appendChild(this.#renderDueDate(task));
-            taskElement.appendChild(this.#renderDescription(task));
-            taskElement.appendChild(this.#renderChecklist(task));
-            taskElement.appendChild(this.#renderViewButton(task));
-            taskElement.appendChild(this.#renderEditButton());
-            taskElement.appendChild(this.#renderDeleteButton());
-            taskWrapper.appendChild(taskElement);
-        })
+        if (tasks.task.length !== 0) {
+            tasks.task.forEach(task => {
+                const taskElement = document.createElement("div");
+                taskElement.appendChild(this.#renderName(task));
+                taskElement.appendChild(this.#renderDueDate(task));
+                taskElement.appendChild(this.#renderDescription(task));
+                taskElement.appendChild(this.#renderChecklist(task));
+                taskElement.appendChild(this.#renderViewButton(task));
+                taskElement.appendChild(this.#renderEditButton());
+                taskElement.appendChild(this.#renderDeleteButton());
+                taskWrapper.appendChild(taskElement);
+            });
+        } else {
+            const p = document.createElement("p");
+            p.textContent = "No todo found";
+            taskWrapper.appendChild(p);
+        }
     }
 
     #renderAddButton() {
