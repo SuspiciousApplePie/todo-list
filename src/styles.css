@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'farmilia_-_personalregular';
+    src: url('fonts/farmilia-personal-webfont.woff') format('woff2'),
+         url('fonts/farmilia-personal-webfont.woff2') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .hide {
     display: none;
 }
