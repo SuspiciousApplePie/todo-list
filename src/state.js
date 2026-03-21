@@ -1,9 +1,9 @@
 import { Storage } from "./storage";
-import { clearContent, closeModal, EditTodoModal, createUndoToast, ChecklistComponent, toggleSelectedProject } from "./ui";
+import { clearContent, closeModal, EditTodoModal, createUndoToast, ChecklistComponent, toggleSelectedProject, createSvg } from "./ui";
 import { Project, ProjectOperation } from "./project";
 import { Todo, TodoOperation, Checklist } from "./todo";
 import { parseISO } from "date-fns";
-import { viewButton } from "./constants";
+import { viewButton, collapseIcon, expandIcon } from "./constants";
 
 export class State {
     static selectProject(main, nav, task, projectId) {
@@ -178,13 +178,15 @@ export class State {
     }
 
     static viewTodoDetails(e) {
-        const todo = e.target.closest("div");
-        const description = todo.querySelector(".description").classList.toggle("hide");
-        const checklist = todo.querySelector(".checklist").classList.toggle("hide");
-        if (e.target.textContent === viewButton.SHOW_TEXT) {
-            e.target.textContent = viewButton.HIDE_TEXT;
+        const svg = e.target.closest("button").querySelector("svg");
+        const todo = e.target.closest(".todo");
+        todo.classList.toggle("expand");
+        todo.querySelector(".description").classList.toggle("hide");
+        todo.querySelector(".checklist").classList.toggle("hide");
+        if (todo.classList.contains("expand")) {
+            svg.replaceWith(createSvg(collapseIcon.URL, collapseIcon.VIEW_BOX, collapseIcon.D));
         } else {
-            e.target.textContent = viewButton.SHOW_TEXT;
+            svg.replaceWith(createSvg(expandIcon.URL, expandIcon.VIEW_BOX, expandIcon.D));
         }
     }
 

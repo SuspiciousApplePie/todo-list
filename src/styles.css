@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cagliostro&family=Poppins:ital,wght@0,400;0,800;1,800&display=swap');
+
 @font-face {
     font-family: 'farmilia_-_personalregular';
     src: url('fonts/farmilia-personal-webfont.woff') format('woff2'),
@@ -10,6 +12,7 @@
     --main-color: #49D056;
     --secondary-color: #8C271E;
     --tertiary-color: #F1F2F3;
+    --fourth-color: #25662C;
 }
 
 *,
@@ -93,6 +96,7 @@
 }
 
 svg {
+    cursor: pointer;
     width: 24px;
     height: 24px;
     fill: var(--main-color);

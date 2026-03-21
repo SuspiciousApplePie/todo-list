@@ -34,21 +34,23 @@ export class Controller {
                 State.closeModal(dialog);
             } else if (e.target.id === projectDialogInfo.ADD_PROJECT_BUTTON) {
                 State.createNewProject(this.addProjectDialog, this.nav, this.task, this.main);
-            } else if (e.target.className === deleteTodoModal.OPEN_DELETE_MODAL) {
-                const project = e.target.parentElement.parentElement.dataset.projectId;
-                const todo = e.target.parentElement.querySelector("h1").dataset.taskId;
-                const title = e.target.parentElement.querySelector("h1").textContent;
-                State.showDeleteModal(this.deleteTodoDialog, title, project, todo);
+            } else if (e.target.closest(`.${deleteTodoModal.OPEN_DELETE_MODAL}`)) {
+                const project = e.target.closest(".todos").dataset.projectId;
+                const todo = e.target.closest(".todo");
+                const todoId = todo.querySelector("h1").dataset.taskId;
+                const title = todo.querySelector("h1").textContent;
+                State.showDeleteModal(this.deleteTodoDialog, title, project, todoId);
             } else if (e.target.id === deleteTodoModal.CLOSE_DELETE_MODAL) {
                 State.closeModal(e.target.parentElement.parentElement);
             } else if (e.target.id === deleteTodoModal.DELETE_TODO) {
                 const projectId = e.target.parentElement.parentElement.dataset.projectId;
                 const todoId = e.target.parentElement.parentElement.dataset.todoId;
                 State.deleteTodo(projectId, todoId, this.nav, this.task, this.main);
-            } else if (e.target.className === editTodoModal.OPEN_EDIT_TODO_MODAL) {
-                const project = e.target.parentElement.parentElement.dataset.projectId;
-                const todo = e.target.parentElement.querySelector("h1").dataset.taskId;
-                State.showEditTodoModal(this.main, this.nav, todo, project, this.editTodoDialog);
+            } else if (e.target.closest(`.${editTodoModal.OPEN_EDIT_TODO_MODAL}`)) {
+                const project = e.target.closest(".todos").dataset.projectId;
+                const todo = e.target.closest(".todo");
+                const todoId = todo.querySelector("h1").dataset.taskId;
+                State.showEditTodoModal(this.main, this.nav, todoId, project, this.editTodoDialog);
             } else if (e.target.id === editTodoModal.CLOSE_EDIT_TODO_MODAL) {
                 const dialog = e.target.parentElement.parentElement;
                 State.closeModal(dialog);
@@ -92,7 +94,7 @@ export class Controller {
                 State.editChecklist(e);
             } else if (e.target.classList.contains(checklist.SAVE_CHECKLIST)) {
                 State.saveChecklist(e);
-            } else if (e.target.classList.contains(viewButton.VIEW_TODO)) {
+            } else if (e.target.closest(`.${viewButton.VIEW_TODO}`)) {
                 State.viewTodoDetails(e);
             }
         })

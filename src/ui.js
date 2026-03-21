@@ -1,8 +1,7 @@
 import { Storage } from "./storage";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel, viewButton } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel, viewButton, addIconSvg, expandIcon, editIcon, deleteIcon } from "./constants";
 import { format } from "date-fns";
 import "./styles.css";
-import addIcon from "./img/add-icon.svg";
 
 export class NavBar {
     constructor(title) {
@@ -41,7 +40,7 @@ export class NavBar {
     }
 
     #renderAddButton(ul) {
-        const svg = createAddIcon();
+        const svg = createSvg(addIconSvg.URL, addIconSvg.VIEW_BOX, addIconSvg.D);
 
         const button = document.createElement("button");
         button.id = projectDialogInfo.OPEN_PROJECT_MODAL;
@@ -66,27 +65,41 @@ export class TaskDisplay {
 
     renderTask(tasks) {
         this.main.querySelector(".no-project").remove();
-        const taskWrapper = document.createElement("div"); 
+        const taskWrapper = document.createElement("div");
+        taskWrapper.className = "todos"; 
         taskWrapper.dataset.projectId = tasks.id;
         taskWrapper.appendChild(this.#renderAddButton());
         this.main.appendChild(taskWrapper);
         if (tasks.task.length !== 0) {
+            const div = document.createElement("div");
+            div.className = "todo-wrapper";
+            taskWrapper.appendChild(div);
             tasks.task.forEach(task => {
                 const taskElement = document.createElement("div");
+                taskElement.className = "todo";
                 taskElement.appendChild(this.#renderName(task));
                 taskElement.appendChild(this.#renderDueDate(task));
                 taskElement.appendChild(this.#renderDescription(task));
                 taskElement.appendChild(this.#renderChecklist(task));
-                taskElement.appendChild(this.#renderViewButton(task));
-                taskElement.appendChild(this.#renderEditButton());
-                taskElement.appendChild(this.#renderDeleteButton());
-                taskWrapper.appendChild(taskElement);
+                taskElement.appendChild(this.#renderButtons(task));
+                div.appendChild(taskElement);
             });
         } else {
             const p = document.createElement("p");
             p.textContent = "No todo found";
             taskWrapper.appendChild(p);
         }
+    }
+
+    #renderButtons(task) {
+        const buttonWrapper = document.createElement("div");
+        buttonWrapper.className = "buttons";
+
+        buttonWrapper.appendChild(this.#renderViewButton(task));
+        buttonWrapper.appendChild(this.#renderEditButton());
+        buttonWrapper.appendChild(this.#renderDeleteButton());
+
+        return buttonWrapper;
     }
 
     #renderAddButton() {
@@ -105,7 +118,6 @@ export class TaskDisplay {
 
     #renderDueDate(task) {
         const element = document.createElement("p");
-        element.textContent = `Deadline:`;
         element.className = "due-date";
 
         if(task.dueDate) {
@@ -115,7 +127,7 @@ export class TaskDisplay {
 
             element.appendChild(time);
         } else {
-            element.textContent += "Not set";
+            element.textContent = "Not set";
         }
 
         return element;
@@ -146,6 +158,9 @@ export class TaskDisplay {
             wrapper.textContent = "No Checklist found.";
         } else {
             task.checkList.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "checklist-item-wrapper";
+
                 const input = document.createElement("input");
                 input.type = "checkbox";
                 input.checked = item.status;
@@ -156,8 +171,10 @@ export class TaskDisplay {
                 label.htmlFor = item.id;
                 label.textContent = item.title;
 
-                wrapper.appendChild(input);
-                wrapper.appendChild(label);
+                div.appendChild(input);
+                div.appendChild(label);
+
+                wrapper.appendChild(div);
             });
         }
 
@@ -166,21 +183,27 @@ export class TaskDisplay {
 
     #renderViewButton() {
         const element = document.createElement("button");
-        element.textContent = viewButton.SHOW_TEXT;
         element.className = viewButton.VIEW_TODO;
+
+        const svg = createSvg(expandIcon.URL, expandIcon.VIEW_BOX, expandIcon.D);
+        
+        element.appendChild(svg);
         return element;
     }
 
     #renderDeleteButton() {
         const element = document.createElement("button");
-        element.textContent = "Delete";
+        
+        const svg = createSvg(deleteIcon.URL, deleteIcon.VIEW_BOX, deleteIcon.D);
+        element.appendChild(svg);
         element.className = deleteTodoModal.OPEN_DELETE_MODAL;
         return element;
     }
 
     #renderEditButton() {
         const element = document.createElement("button");
-        element.textContent = "Edit";
+        const svg = createSvg(editIcon.URL, editIcon.VIEW_BOX, editIcon.D);
+        element.appendChild(svg);
         element.className = editTodoModal.OPEN_EDIT_TODO_MODAL;
         return element;
     }
@@ -804,12 +827,12 @@ export function toggleSelectedProject(main, projectId) {
     })
 }
 
-export function createAddIcon() {
-    const svg = document.createElementNS(addIconSvg.URL, "svg");
-    svg.setAttribute("viewBox", addIconSvg.VIEW_BOX);
+export function createSvg(url, viewBox, d) {
+    const svg = document.createElementNS(url, "svg");
+    svg.setAttribute("viewBox", viewBox);
     
-    const path = document.createElementNS(addIconSvg.URL ,"path");
-    path.setAttribute("d", addIconSvg.D);
+    const path = document.createElementNS(url ,"path");
+    path.setAttribute("d", d);
     
     svg.appendChild(path);
 
