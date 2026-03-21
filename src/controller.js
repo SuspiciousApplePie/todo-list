@@ -27,7 +27,7 @@ export class Controller {
             } else if (e.target.id === todoDialogInfo.ADD_TODO_BUTTON) {
                 const projectId = e.target.parentElement.parentElement.previousElementSibling.dataset.projectId;
                 State.createNewTodo(projectId, this.addTaskDialog, this.nav, this.task, this.main);
-            } else if (e.target.id === projectDialogInfo.OPEN_PROJECT_MODAL) {
+            } else if (e.target.closest(`#${projectDialogInfo.OPEN_PROJECT_MODAL}`)) {
                 State.showProjectModal(this.addProjectDialog);
             } else if (e.target.id === projectDialogInfo.CLOSE_MODAL_BUTTON) {
                 const dialog = e.target.parentElement.parentElement;

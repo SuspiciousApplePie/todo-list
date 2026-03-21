@@ -41,13 +41,11 @@ export class NavBar {
     }
 
     #renderAddButton(ul) {
-        const image = document.createElement("img");
-        image.src = addIcon;
-        image.alt = "Add Project";
-        image.id = projectDialogInfo.OPEN_PROJECT_MODAL;
+        const svg = createAddIcon();
 
         const button = document.createElement("button");
-        button.appendChild(image);
+        button.id = projectDialogInfo.OPEN_PROJECT_MODAL;
+        button.appendChild(svg);
         ul.appendChild(button);
     }
 
@@ -804,4 +802,16 @@ export function toggleSelectedProject(main, projectId) {
             item.classList.remove("selected");
         }
     })
+}
+
+export function createAddIcon() {
+    const svg = document.createElementNS(addIconSvg.URL, "svg");
+    svg.setAttribute("viewBox", addIconSvg.VIEW_BOX);
+    
+    const path = document.createElementNS(addIconSvg.URL ,"path");
+    path.setAttribute("d", addIconSvg.D);
+    
+    svg.appendChild(path);
+
+    return svg;
 }

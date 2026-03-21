@@ -92,8 +92,14 @@
     border: none;
 }
 
-.main nav button img:hover {
-    border: 2px solid var(--main-color);
+svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--main-color);
+}
+
+svg:hover {
+    fill: var(--fourth-color);
 }
 
 .main nav ul {
