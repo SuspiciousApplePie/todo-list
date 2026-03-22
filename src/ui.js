@@ -77,6 +77,7 @@ export class TaskDisplay {
             tasks.task.forEach(task => {
                 const taskElement = document.createElement("div");
                 taskElement.className = "todo";
+                checkPriority(taskElement, task.priority);
                 taskElement.appendChild(this.#renderName(task));
                 taskElement.appendChild(this.#renderDueDate(task));
                 taskElement.appendChild(this.#renderDescription(task));
@@ -837,4 +838,30 @@ export function createSvg(url, viewBox, d) {
     svg.appendChild(path);
 
     return svg;
+}
+
+function checkPriority(todoElement, priority) {
+    if(Number(priority) === priorityLevel.LOW) {
+        setPriorityColor(todoElement, setPriorityColorToLow);
+    } else if (Number(priority) === priorityLevel.MEDIUM) {
+        setPriorityColor(todoElement, setPriorityColorToMedium);
+    } else if (Number(priority) === priorityLevel.HIGH) {
+        setPriorityColor(todoElement, setPriorityColorToHigh)
+    }
+}
+
+function setPriorityColor(todoElement, changeColor) {
+    changeColor(todoElement);
+}
+
+function setPriorityColorToLow(todoElement) {
+    todoElement.classList.toggle("low");
+}
+
+function setPriorityColorToMedium(todoElement) {
+    todoElement.classList.add("medium");
+}
+
+function setPriorityColorToHigh(todoElement) {
+    todoElement.classList.toggle("high");
 }

@@ -13,8 +13,10 @@
     --secondary-color: #8C271E;
     --tertiary-color: #F1F2F3;
     --fourth-color: #25662C;
+    --high-priority-color: #C0392B;
+    --medium-priority-color: #D4A017;
+    --low-priority-color: #2E7D4F;
 }
-
 *,
 *::before,
 *::after {
@@ -143,7 +145,7 @@ nav::selection {
 }
 
 .todo-wrapper .todo {
-    border: 5px solid #49D056;
+    border: 4px solid var(--secondary-color);
     padding: 8px;
     border-radius: 5px;
     display: grid;
@@ -192,8 +194,9 @@ nav::selection {
     word-break: break-all;
     align-self: center;
     justify-self: center;
-    text-indent: 20px;
-    text-align: justify;
+    text-align: center;
+    font-size: 1.2rem;
+    width: 60ch;
 }
 
 .todo.expand > .checklist {
@@ -227,4 +230,17 @@ nav::selection {
 
 .todo.expand .buttons {
     grid-row: -2 / -1;
+}
+
+/* Priority Indicator Style */
+.todo.low {
+    border-color: var(--low-priority-color);
+}
+
+.todo.medium {
+    border-color: var(--medium-priority-color);
+}
+
+.todo.high {
+    border-color: var(--high-priority-color);
 }
