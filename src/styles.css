@@ -41,19 +41,24 @@ button {
 
 /* Header */
 .header {
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 4px;
-    justify-content: left;
+    display: flex;
+    gap: 1rem;
     padding: 8px;
+    align-items: center;
     font-family: 'farmilia_-_personalregular', 'Courier New', Courier, monospace;
     background-color: var(--main-color);
     color: var(--secondary-color);
 }
 
+.header p {
+    font-size: 2rem;
+    text-decoration: underline;
+    color: var(--tertiary-color);
+}
+
 .header img {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     justify-self: center;
     align-self: center;
 }
@@ -402,7 +407,24 @@ dialog .checkfield-wrapper {
     gap: 1rem;
 }
 
+.main > p {
+    align-self: center;
+    justify-self: center;
+    padding: 20px;
+    font-size: 3rem;
+    font-family: 'farmilia_-_personalregular', 'Courier New', Courier, monospace;
+    color: var(--secondary-color);
+}
 
+dialog::selection {
+    background-color: var(--tertiary-color);
+    color: var(--secondary-color);
+}
+
+.main::selection {
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
+}
 
 .hide {
     display: none;
