@@ -20,7 +20,7 @@ export class Controller {
         this.main.addEventListener("click", (e) => {
             if (e.target.dataset.id) {
                 State.selectProject(this.main, this.nav, this.task, e.target.dataset.id);
-            } else if (e.target.id === todoDialogInfo.OPEN_TODO_MODAL) {
+            } else if (e.target.closest(`#${todoDialogInfo.OPEN_TODO_MODAL}`)) {
                 State.showTodoModal(this.addTaskDialog)
             } else if (e.target.id === todoDialogInfo.CLOSE_MODAL_BUTTON) {
                 State.closeModal(e.target.parentElement.parentElement);

@@ -68,7 +68,7 @@ export class TaskDisplay {
         const taskWrapper = document.createElement("div");
         taskWrapper.className = "todos"; 
         taskWrapper.dataset.projectId = tasks.id;
-        taskWrapper.appendChild(this.#renderAddButton());
+        taskWrapper.appendChild(this.#renderHeader());
         this.main.appendChild(taskWrapper);
         if (tasks.task.length !== 0) {
             const div = document.createElement("div");
@@ -103,10 +103,23 @@ export class TaskDisplay {
         return buttonWrapper;
     }
 
+    #renderHeader() {
+        const div = document.createElement("div");
+        const h1 = document.createElement("h1");
+        div.className = "todo-header";
+        h1.textContent = "Todos";
+        div.appendChild(h1);
+        div.appendChild(this.#renderAddButton());
+
+        return div;
+    }
+
     #renderAddButton() {
         const button = document.createElement("button");
         button.id = todoDialogInfo.OPEN_TODO_MODAL;
-        button.textContent = todoDialogInfo.ADD_TODO_MODAL_TEXT;
+        
+        const svg = createSvg(addIconSvg.URL, addIconSvg.VIEW_BOX, addIconSvg.D);
+        button.appendChild(svg);
         return button;
     }
 

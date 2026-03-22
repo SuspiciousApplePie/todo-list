@@ -258,3 +258,18 @@ nav::selection {
 .todo.high {
     border-color: var(--high-priority-color);
 }
+
+/* Todo Header */
+.todo-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    font-family: 'farmilia_-_personalregular', 'Courier New', Courier, monospace;
+    color: var(--secondary-color);
+    align-items: center;
+}
+
+.todo-header button {
+    background-color: transparent;
+    border: none;
+}
