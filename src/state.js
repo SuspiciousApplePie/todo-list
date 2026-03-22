@@ -157,11 +157,11 @@ export class State {
     }
 
     static deleteChecklistItem(e) {
-        e.target.parentElement.remove();
+        e.target.closest("li").remove();
     }
 
     static editChecklist(e) {     
-        const li = e.target.parentElement;
+        const li = e.target.closest("li");
         const input = li.querySelector(".checklist-title-field");
         const saveBtn = li.querySelector(".save-checklist");
         input.readOnly = false;
@@ -172,9 +172,10 @@ export class State {
     static saveChecklist(e) {
         const title = e.target.closest("li").querySelector(".checklist-title-field");
         const editBtn = e.target.closest("li").querySelector(".edit-checklist")
+        const saveBtn = e.target.closest("li").querySelector(".save-checklist")
         title.readOnly = true;
         editBtn.disabled = false;
-        e.target.classList.toggle("hide");
+        saveBtn.classList.toggle("hide");
     }
 
     static viewTodoDetails(e) {

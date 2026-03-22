@@ -257,6 +257,7 @@ export class AddTaskDialog {
 
     #renderTaskNameField() {
         const div = document.createElement("div");
+        div.className = "title-wrapper";
         const label = document.createElement("label");
         label.textContent = "Todo";
         label.htmlFor = "title";
@@ -273,6 +274,7 @@ export class AddTaskDialog {
 
     #renderDescriptionField() {
         const div = document.createElement("div");
+        div.className = "desc-wrapper";
         const label = document.createElement("label");
         label.textContent = "Description";
         label.htmlFor = "description";
@@ -287,6 +289,7 @@ export class AddTaskDialog {
 
     #renderDueDate() {
         const div = document.createElement("div");
+        div.className = "date-wrapper";
         const label = document.createElement("label");
         label.textContent = "Due Date";
         label.htmlFor = "due-date";
@@ -355,21 +358,21 @@ export class AddTaskDialog {
     #renderButtons() {
         const buttonInfo = [
             {
-                text: "Back",
+                svg: createSvg(backIcon.URL, backIcon.VIEW_BOX, backIcon.D),
                 buttonId: todoDialogInfo.CLOSE_MODAL_BUTTON,
             },
             {
-                text: todoDialogInfo.ADD_TODO_MODAL_TEXT,
+                svg: createSvg(checkIcon.URL, checkIcon.VIEW_BOX, checkIcon.D),
                 buttonId: todoDialogInfo.ADD_TODO_BUTTON,
-
             }
         ];
 
         const div = document.createElement("div");
+        div.className = "btn-wrapper";
 
         buttonInfo.forEach(buttonObject => {
             const button = document.createElement("button");
-            button.textContent = buttonObject.text;
+            button.appendChild(buttonObject.svg);
             button.id = buttonObject.buttonId;
             div.appendChild(button);
         })
@@ -467,6 +470,7 @@ export class DeleteModal {
 
     renderDeleteModal(title, project, todo) {
         const dialog = document.createElement("dialog");
+        dialog.className = "delete-modal";
         dialog.dataset.projectId = project;
         dialog.dataset.todoId = todo;
         dialog.appendChild(this.#createHeader(title));
@@ -491,21 +495,21 @@ export class DeleteModal {
     #createButtons() {
         const buttonInfo = [
             {
-                text: "No",
+                svg: createSvg(backIcon.URL, backIcon.VIEW_BOX, backIcon.D),
                 buttonId: deleteTodoModal.CLOSE_DELETE_MODAL,
             },
             {
-                text: "Yes",
+                svg: createSvg(deleteIcon.URL, deleteIcon.VIEW_BOX, deleteIcon.D),
                 buttonId: deleteTodoModal.DELETE_TODO,
-
             }
         ];
 
         const div = document.createElement("div");
+        div.className = "btn-wrapper";
 
         buttonInfo.forEach(buttonObject => {
             const button = document.createElement("button");
-            button.textContent = buttonObject.text;
+            button.appendChild(buttonObject.svg)
             button.id = buttonObject.buttonId;
             div.appendChild(button);
         })
@@ -528,6 +532,7 @@ export class EditTodoModal {
 
     #createEditTodoModal(todo) {
         const dialog = document.createElement("dialog");
+        dialog.className = "edit-todo-dialog";
         dialog.appendChild(this.#createHeader());
         dialog.appendChild(this.#createTitleInputDialog(todo.title));
         dialog.appendChild(this.#createDescriptionField(todo.description));
@@ -549,6 +554,7 @@ export class EditTodoModal {
 
     #createTitleInputDialog(title) {
         const div = document.createElement("div");
+        div.className = "title-wrapper";
 
         const label = document.createElement("label");
         label.htmlFor = "title";
@@ -567,6 +573,8 @@ export class EditTodoModal {
 
     #createDescriptionField(description) {
         const div = document.createElement("div");
+        div.className = "desc-wrapper";
+
         const label = document.createElement("label");
         label.textContent = "Description";
         label.htmlFor = "description";
@@ -582,6 +590,7 @@ export class EditTodoModal {
 
     #createDueDate(dueDate) {
         const div = document.createElement("div");
+        div.className = "date-wrapper";
         const label = document.createElement("label");
         label.textContent = "Due Date";
         label.htmlFor = "due-date";
@@ -598,6 +607,7 @@ export class EditTodoModal {
 
     #createPriority(priority) {
         const div = document.createElement("div");
+        div.className = "priority-wrapper";
 
         const fieldset = document.createElement("fieldset");
         fieldset.className = "priority-field";
@@ -651,21 +661,22 @@ export class EditTodoModal {
     #createButtons() {
         const buttonInfo = [
             {
-                text: "Close",
+                svg: createSvg(backIcon.URL, backIcon.VIEW_BOX, backIcon.D),
                 buttonId: editTodoModal.CLOSE_EDIT_TODO_MODAL,
             },
             {
-                text: "Save Changes",
+                svg: createSvg(checkIcon.URL, checkIcon.VIEW_BOX, checkIcon.D),
                 buttonId: editTodoModal.EDIT_TODO,
 
             }
         ];
 
         const div = document.createElement("div");
+        div.className = "btn-wrapper";
 
         buttonInfo.forEach(buttonObject => {
             const button = document.createElement("button");
-            button.textContent = buttonObject.text;
+            button.appendChild(buttonObject.svg);
             button.id = buttonObject.buttonId;
             div.appendChild(button);
         })
@@ -688,6 +699,7 @@ export class EditTodoModal {
 export class ChecklistComponent {
     static renderChecklistField() {
         const div = document.createElement("div");
+        div.className = "checkfield-wrapper";
         const label = document.createElement("label");
         label.textContent = "Add Checklist";
         label.htmlFor = "checklist";
@@ -699,7 +711,8 @@ export class ChecklistComponent {
         div.appendChild(input);
 
         const button = document.createElement("button");
-        button.textContent = "Add Checklist";
+        const svg = createSvg(addIconSvg.URL, addIconSvg.VIEW_BOX, addIconSvg.D);
+        button.appendChild(svg);
         button.id = checklist.ADD_CHECKLIST;
         div.appendChild(button);
 
@@ -708,7 +721,7 @@ export class ChecklistComponent {
 
     static renderChecklistItems() {
         const div = document.createElement("div");
-
+        div.className = "checklist-wrapper";
         const h1 = document.createElement("h1");
         h1.textContent = "Checklist";
         div.appendChild(h1);
@@ -745,18 +758,21 @@ export class ChecklistComponent {
         li.appendChild(input);
 
         const editBtn = document.createElement("button")
-        editBtn.textContent = "Edit";
+        const svg = createSvg(editIcon.URL, editIcon.VIEW_BOX, editIcon.D);
+        editBtn.appendChild(svg);
         editBtn.className = checklist.EDIT_CHECKLIST;
         li.appendChild(editBtn);
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Delete";
+        const delSvg = createSvg(deleteIcon.URL, deleteIcon.VIEW_BOX, deleteIcon.D);
+        deleteBtn.appendChild(delSvg)
         deleteBtn.className = checklist.DELETE_CHECKLIST;
         li.appendChild(deleteBtn);
 
         const saveBtn = document.createElement("button");
+        const saveSvg = createSvg(checkIcon.URL, checkIcon.VIEW_BOX, checkIcon.D);
+        saveBtn.appendChild(saveSvg);
         saveBtn.className = "save-checklist hide";
-        saveBtn.textContent = "Save";
         li.appendChild(saveBtn); 
 
         ul.appendChild(li);
@@ -772,6 +788,12 @@ export class ChecklistComponent {
             li.className = "existing-checklist-item";
             li.dataset.checkListId = item.id;
 
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.className = "checklist-status";
+            input.checked = item.status;
+            li.appendChild(input);
+
             const title = document.createElement("input");
             title.value = item.title;
             title.textContent = item.title;
@@ -780,25 +802,24 @@ export class ChecklistComponent {
             title.name = "checklist";
             li.appendChild(title);
 
-            const input = document.createElement("input");
-            input.type = "checkbox";
-            input.className = "checklist-status";
-            input.checked = item.status;
-            li.appendChild(input);
-
             const editBtn = document.createElement("button")
-            editBtn.textContent = "Edit";
+            const svg = createSvg(editIcon.URL, editIcon.VIEW_BOX, editIcon.D);
+            editBtn.appendChild(svg);
             editBtn.className = checklist.EDIT_CHECKLIST;
             li.appendChild(editBtn);
 
             const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
+            const delSvg = createSvg(deleteIcon.URL, deleteIcon.VIEW_BOX, deleteIcon.D);
+            deleteBtn.appendChild(delSvg)
             deleteBtn.className = checklist.DELETE_CHECKLIST;
             li.appendChild(deleteBtn);
 
             const saveBtn = document.createElement("button");
+
+            const saveSvg = createSvg(checkIcon.URL, checkIcon.VIEW_BOX, checkIcon.D);
+            saveBtn.appendChild(saveSvg);
+
             saveBtn.className = "save-checklist hide";
-            saveBtn.textContent = "Save";
             li.appendChild(saveBtn); 
 
             ul.appendChild(li);

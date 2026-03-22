@@ -22,10 +22,10 @@ export class Controller {
                 State.selectProject(this.main, this.nav, this.task, e.target.dataset.id);
             } else if (e.target.closest(`#${todoDialogInfo.OPEN_TODO_MODAL}`)) {
                 State.showTodoModal(this.addTaskDialog)
-            } else if (e.target.id === todoDialogInfo.CLOSE_MODAL_BUTTON) {
-                State.closeModal(e.target.parentElement.parentElement);
-            } else if (e.target.id === todoDialogInfo.ADD_TODO_BUTTON) {
-                const projectId = e.target.parentElement.parentElement.previousElementSibling.dataset.projectId;
+            } else if (e.target.closest(`#${todoDialogInfo.CLOSE_MODAL_BUTTON}`)) {
+                State.closeModal(e.target.closest("dialog"));
+            } else if (e.target.closest(`#${todoDialogInfo.ADD_TODO_BUTTON}`)) {
+                const projectId = e.target.closest(".main").querySelector(".todos").dataset.projectId;
                 State.createNewTodo(projectId, this.addTaskDialog, this.nav, this.task, this.main);
             } else if (e.target.closest(`#${projectDialogInfo.OPEN_PROJECT_MODAL}`)) {
                 State.showProjectModal(this.addProjectDialog);
@@ -40,27 +40,27 @@ export class Controller {
                 const todoId = todo.querySelector("h1").dataset.taskId;
                 const title = todo.querySelector("h1").textContent;
                 State.showDeleteModal(this.deleteTodoDialog, title, project, todoId);
-            } else if (e.target.id === deleteTodoModal.CLOSE_DELETE_MODAL) {
-                State.closeModal(e.target.parentElement.parentElement);
-            } else if (e.target.id === deleteTodoModal.DELETE_TODO) {
-                const projectId = e.target.parentElement.parentElement.dataset.projectId;
-                const todoId = e.target.parentElement.parentElement.dataset.todoId;
+            } else if (e.target.closest(`#${deleteTodoModal.CLOSE_DELETE_MODAL}`)) {
+                State.closeModal(e.target.closest("dialog"));
+            } else if (e.target.closest(`#${deleteTodoModal.DELETE_TODO}`)) {
+                const projectId = e.target.closest("dialog").dataset.projectId;
+                const todoId = e.target.closest("dialog").dataset.todoId;
                 State.deleteTodo(projectId, todoId, this.nav, this.task, this.main);
             } else if (e.target.closest(`.${editTodoModal.OPEN_EDIT_TODO_MODAL}`)) {
                 const project = e.target.closest(".todos").dataset.projectId;
                 const todo = e.target.closest(".todo");
                 const todoId = todo.querySelector("h1").dataset.taskId;
                 State.showEditTodoModal(this.main, this.nav, todoId, project, this.editTodoDialog);
-            } else if (e.target.id === editTodoModal.CLOSE_EDIT_TODO_MODAL) {
-                const dialog = e.target.parentElement.parentElement;
+            } else if (e.target.closest(`#${editTodoModal.CLOSE_EDIT_TODO_MODAL}`)) {
+                const dialog = e.target.closest("dialog");
                 State.closeModal(dialog);
-            } else if (e.target.id === editTodoModal.EDIT_TODO) {
-                const projectId = e.target.parentElement.parentElement.dataset.projectId;
-                const todoId = e.target.parentElement.parentElement.dataset.todoId;
+            } else if (e.target.closest(`#${editTodoModal.EDIT_TODO}`)) {
+                const projectId = e.target.closest("dialog").dataset.projectId;
+                const todoId = e.target.closest("dialog").dataset.todoId;
                 State.editTodo(projectId, todoId, this.editTodoDialog, this.nav, this.task, this.main);
-            } else if (e.target.id === checklist.ADD_CHECKLIST) {
+            } else if (e.target.closest(`#${checklist.ADD_CHECKLIST}`)) {
                 State.addChecklistItem(e);
-            } else if (e.target.className === checklist.DELETE_CHECKLIST) {
+            } else if (e.target.closest(`.${checklist.DELETE_CHECKLIST}`)) {
                 const pendingElement = e.target.closest("li");
                 pendingElement.classList.toggle("hide");
 
@@ -90,9 +90,9 @@ export class Controller {
                     return pending;
                 });
                 this.pendingDeletion = pendingDeletion;
-            } else if (e.target.className === checklist.EDIT_CHECKLIST) {
+            } else if (e.target.closest(`.${checklist.EDIT_CHECKLIST}`)) {
                 State.editChecklist(e);
-            } else if (e.target.classList.contains(checklist.SAVE_CHECKLIST)) {
+            } else if (e.target.closest(`.${checklist.SAVE_CHECKLIST}`)) {
                 State.saveChecklist(e);
             } else if (e.target.closest(`.${viewButton.VIEW_TODO}`)) {
                 State.viewTodoDetails(e);
