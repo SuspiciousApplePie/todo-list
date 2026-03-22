@@ -159,7 +159,7 @@ nav::selection {
 
 .todo-wrapper .todo {
     border: 4px solid var(--secondary-color);
-    padding: 8px;
+    padding: 1rem;
     border-radius: 5px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -170,6 +170,7 @@ nav::selection {
 .todo > h1 {
     font-family: "Cagliostro", sans-serif;
     font-size: 36px;
+    font-weight: 100;
     align-self: center;
 }
 
