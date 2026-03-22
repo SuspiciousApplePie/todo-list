@@ -13,16 +13,24 @@
     --secondary-color: #8C271E;
     --tertiary-color: #F1F2F3;
     --fourth-color: #25662C;
+    --lighter-red: red;
     --high-priority-color: #C0392B;
     --medium-priority-color: #D4A017;
     --low-priority-color: #2E7D4F;
 }
+
 *,
 *::before,
 *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+svg {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
 }
 
 /* Header */
@@ -97,14 +105,11 @@
     border: none;
 }
 
-svg {
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
+nav svg {
     fill: var(--main-color);
 }
 
-svg:hover {
+nav svg:hover {
     fill: var(--fourth-color);
 }
 
@@ -135,6 +140,14 @@ nav::selection {
 }
 
 /* Todo */
+
+.todos svg {
+    fill: var(--secondary-color);
+}
+
+.todos svg:hover {
+    fill: var(--lighter-red);
+}
 
 .todos > .todo-wrapper {
     display: grid;
