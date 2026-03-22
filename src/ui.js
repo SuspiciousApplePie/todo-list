@@ -1,5 +1,5 @@
 import { Storage } from "./storage";
-import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel, viewButton, addIconSvg, expandIcon, editIcon, deleteIcon } from "./constants";
+import { todoDialogInfo, projectDialogInfo, deleteTodoModal, editTodoModal, checklist, priorityLevel, viewButton, addIconSvg, expandIcon, editIcon, deleteIcon, backIcon, checkIcon } from "./constants";
 import { format } from "date-fns";
 import "./styles.css";
 
@@ -432,11 +432,11 @@ export class AddProjectDialog {
     #renderButtons() {
         const buttonInfo = [
             {
-                text: "Back",
+                svg: createSvg(backIcon.URL, backIcon.VIEW_BOX, backIcon.D),
                 buttonId: projectDialogInfo.CLOSE_MODAL_BUTTON,
             },
             {
-                text: "Add Project",
+                svg: createSvg(checkIcon.URL, checkIcon.VIEW_BOX, checkIcon.D),
                 buttonId: projectDialogInfo.ADD_PROJECT_BUTTON,
 
             }
@@ -446,7 +446,7 @@ export class AddProjectDialog {
 
         buttonInfo.forEach(buttonObject => {
             const button = document.createElement("button");
-            button.textContent = buttonObject.text;
+            button.appendChild(buttonObject.svg);
             button.id = buttonObject.buttonId;
             div.appendChild(button);
         })

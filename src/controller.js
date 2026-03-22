@@ -29,10 +29,10 @@ export class Controller {
                 State.createNewTodo(projectId, this.addTaskDialog, this.nav, this.task, this.main);
             } else if (e.target.closest(`#${projectDialogInfo.OPEN_PROJECT_MODAL}`)) {
                 State.showProjectModal(this.addProjectDialog);
-            } else if (e.target.id === projectDialogInfo.CLOSE_MODAL_BUTTON) {
-                const dialog = e.target.parentElement.parentElement;
+            } else if (e.target.closest(`#${projectDialogInfo.CLOSE_MODAL_BUTTON}`)) {
+                const dialog = e.target.closest("dialog");
                 State.closeModal(dialog);
-            } else if (e.target.id === projectDialogInfo.ADD_PROJECT_BUTTON) {
+            } else if (e.target.closest(`#${projectDialogInfo.ADD_PROJECT_BUTTON}`)) {
                 State.createNewProject(this.addProjectDialog, this.nav, this.task, this.main);
             } else if (e.target.closest(`.${deleteTodoModal.OPEN_DELETE_MODAL}`)) {
                 const project = e.target.closest(".todos").dataset.projectId;
